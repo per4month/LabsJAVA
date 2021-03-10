@@ -16,7 +16,7 @@ public class MyFrame extends JFrame implements KeyListener {
     int time;
 
     public MyFrame() {
-        habitat = new Habitat(1, 2, 100, 50, this);
+        habitat = new Habitat(1, 2, 100, 10, this);
         myField = new MyPanel();
         controller = new Controller(myField, habitat, this);
         habitat.confifureController(controller);
@@ -47,7 +47,7 @@ public class MyFrame extends JFrame implements KeyListener {
 
 
     @Override
-    public void keyTyped(KeyEvent keyEvent) {
+    public void keyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_B:
                 if (!controller.isBornProcessOn()) {
@@ -69,6 +69,7 @@ public class MyFrame extends JFrame implements KeyListener {
         }
 
     }
+
 
     public void configureController(Controller controller) {
         this.controller = controller;
@@ -128,7 +129,7 @@ public class MyFrame extends JFrame implements KeyListener {
     private final String startButtonName = "Start";
 
     @Override
-    public void keyPressed(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyReleased(KeyEvent e) {}

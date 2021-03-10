@@ -44,7 +44,7 @@ public class Habitat {
         return prob <= P1 && time % N1 == 0;
     }
     boolean isAlbinosBorn(int N2, double K, int time) {
-        return N2 % time == 0 && K < (double)(RabbitAlbinos.countOfAlbinos / Rabbit.countOfRabbits)*100;
+        return time % N2 == 0 && RabbitAlbinos.countOfAlbinos*K < (int)(Rabbit.countOfRabbits);
     }
     public int getWidth() {
         return WIDTH;
