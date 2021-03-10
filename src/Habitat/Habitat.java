@@ -2,7 +2,7 @@ package Habitat;
 
 import java.awt.*;
 import java.util.*;
-
+import java.util.Vector;
 import java.util.Random;
 
 import Rabbit.*;
@@ -21,7 +21,7 @@ public class Habitat {
     private MyFrame myframe;
     final private String pathToSimple = "src/Resources/Simple.png";
     final private String pathToAlbinos = "src/Resources/Albinos.png";
-    private Vector<Rabbit> rabbitVector = new Vector();
+    private Vector<Rabbit> rabbitVector = new Vector<>();
     private Timer timer = new Timer();
     private boolean bornProcessOn = false;
     bornProcess bornProcess = new bornProcess(this);
