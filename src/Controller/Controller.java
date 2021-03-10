@@ -51,4 +51,5 @@ public class Controller {
     public void passTime(int time) {
         frame.updateTime(time);
     }
+
 }

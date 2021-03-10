@@ -2,10 +2,14 @@ package View;
 
 import Habitat.Habitat;
 import Controller.Controller;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 
 public class MyFrame extends JFrame implements KeyListener {
@@ -54,13 +58,24 @@ public class MyFrame extends JFrame implements KeyListener {
                     myField = new MyPanel();
                     myField.configureController(controller);
                     controller.startBornProcess();
+                    try {
+                        Music.playSound("src/Resources/Music.wav");
+                    } catch (LineUnavailableException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (UnsupportedAudioFileException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case KeyEvent.VK_E:
                 if (controller.isBornProcessOn()) {
                     controller.stopBornProcess();
+                    Music.stopSound();
                     showFinishDialog();
                     controller.refreshRabbitPopulation();
+
                 }
                 break;
             case KeyEvent.VK_T:
