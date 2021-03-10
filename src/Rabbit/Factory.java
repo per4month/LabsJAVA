@@ -1,4 +1,4 @@
-package Rabbit.Factory;
+package Rabbit;
 
 import Rabbit.Rabbit;
 

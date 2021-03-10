@@ -1,6 +1,4 @@
-package Rabbit.Factory;
-import Rabbit.Rabbit;
-import Rabbit.RabbitSimple;
+package Rabbit;
 
 
 public class FactorySimple implements Factory {
