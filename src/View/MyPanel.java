@@ -6,7 +6,7 @@ import java.util.Vector;
 import Controller.Controller;
 
 public class MyPanel extends JPanel {
-    private Vector<Rabbit> rabbits = new Vector();
+    private Vector<Rabbit> rabbits = new Vector<>();
     Controller controller;
 
     public MyPanel() {
