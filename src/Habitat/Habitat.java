@@ -18,7 +18,7 @@ public class Habitat {
     private Controller controller;
     private int WIDTH = 600;
     private int HEIGHT = 600;
-    private MyFrame myframe
+    private MyFrame myframe;
     final private String pathToSimple = "src/Resources/Simple.png";
     final private String pathToAlbinos = "src/Resources/Albinos.png";
     private Vector<Rabbit> rabbitVector = new Vector();
@@ -63,7 +63,7 @@ public class Habitat {
             Point randomPoint = generatePoint();
             Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToAlbinos);
             rabbitVector.add(newRabbit);
-            controller.draw(newRabbit);
+            controller.toPaint(rabbitVector);
 
         }
         if(isSimpleBorn(N1,P1,time)) {
@@ -71,21 +71,21 @@ public class Habitat {
             Point randomPoint = generatePoint();
             Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToSimple);
             rabbitVector.add(newRabbit);
-            controller.draw(newRabbit);
+            controller.toPaint(rabbitVector);
 
         }
     }
 
     public void startBorn() {
         bornProcessOn = true;
-        timer.schedule(isBornProcess,0, 1000);
+        timer.schedule(bornProcess,0, 1000);
     }
 
     public void stopBorn() {
         timer.cancel();
         timer.purge();
         timer = new Timer();
-        bornProcess = new BornProcess(this);
+        bornProcess = new bornProcess(this);
         rabbitVector  = new Vector();
         bornProcessOn = false;
     }

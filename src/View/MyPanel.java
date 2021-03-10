@@ -3,6 +3,7 @@ import Rabbit.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;
+import Controller.Controller;
 
 public class MyPanel extends JPanel {
     private Vector<Rabbit> rabbits = new Vector();
@@ -28,4 +29,8 @@ public class MyPanel extends JPanel {
             }
         }
     }
+    public void configureController(Controller controller) {
+        this.controller = controller;
+    }
+
 }

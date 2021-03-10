@@ -1,7 +1,7 @@
 package View;
 
 import Habitat.Habitat;
-
+import Controller.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -83,12 +83,12 @@ public class MyFrame extends JFrame implements KeyListener {
                 new Font("Serif", Font.BOLD, 16),
                 Color.BLACK);
 
-        JLabel ordinaryRabbitsLabel = createLabel("Ordinary: " + controller.getOrdinaryRabbitsAmount(),
+        JLabel simpleRabbitsLabel = createLabel("Ordinary: " + controller.getRabbitSimple(),
                 SwingConstants.CENTER,
                 new Font("Courier New", Font.ITALIC, 16),
                 Color.RED);
 
-        JLabel albinosRabbitsLabel = createLabel("Albinos: " + controller.getAlbinosRabbitsAmount(),
+        JLabel albinosRabbitsLabel = createLabel("Albinos: " + controller.getRabbitAlbinos(),
                 SwingConstants.CENTER,
                 new Font("Times New Roman", Font.BOLD, 16),
                 Color.MAGENTA);
@@ -104,7 +104,7 @@ public class MyFrame extends JFrame implements KeyListener {
                 Color.BLUE);
 
         panel.add(messageLabel);
-        panel.add(ordinaryRabbitsLabel);
+        panel.add(simpleRabbitsLabel);
         panel.add(albinosRabbitsLabel);
         panel.add(allRabbitsCount);
         panel.add(timeLabel);
