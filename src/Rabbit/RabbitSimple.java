@@ -11,7 +11,7 @@ public class RabbitSimple extends Rabbit {
 
     static {
         try {
-            image = ImageIO.read(new File("src/resources/Ordinary.png"));
+            image = ImageIO.read(new File("src/resources/Simple.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
