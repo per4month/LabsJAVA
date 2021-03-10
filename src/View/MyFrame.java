@@ -11,13 +11,13 @@ import java.awt.event.KeyListener;
 public class MyFrame extends JFrame implements KeyListener {
     Habitat habitat;
     Controller controller;
-    MyField myField;
+    MyPanel myField;
     JLabel timeLabel;
     int time;
 
     public MyFrame() {
         habitat = new Habitat(1, 2, 100, 50, this);
-        myField = new MyField();
+        myField = new MyPanel();
         controller = new Controller(myField, habitat, this);
         habitat.confifureController(controller);
         myField.configureController(controller);
@@ -51,7 +51,7 @@ public class MyFrame extends JFrame implements KeyListener {
         switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_B:
                 if (!controller.isBornProcessOn()) {
-                    myField = new MyField();
+                    myField = new MyPanel();
                     myField.configureController(controller);
                     controller.startBornProcess();
                 }
