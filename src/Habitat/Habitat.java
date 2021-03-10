@@ -35,8 +35,8 @@ public class Habitat {
     }
 
     private Point generatePoint() {
-        int x = (int) (Math.random() * (myframe.getWidth() - 99));
-        int y = (int) (Math.random() * (myframe.getHeight() - 99));
+        int x = (int) (Math.random() * (myframe.getWidth() - 100));
+        int y = (int) (Math.random() * (myframe.getHeight() - 100));
         return new Point(x, y);
     }
     boolean isSimpleBorn(int N1, int P1, int time) {
