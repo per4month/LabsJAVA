@@ -6,16 +6,17 @@ import java.util.*;
 import java.util.Random;
 
 import Rabbit.*;
+import View.*;
 
 public class Habitat {
     private int N1;
     private int N2;
     private int P1;
     private double K;
-    //private Controller controller
+    private Controller controller
     private int WIDTH = 600;
     private int HEIGHT = 600;
-    //private MyFrame myframe
+    private MyFrame myframe
     final private String pathToSimple = "src/Resources/Simple.png";
     final private String pathToAlbinos = "src/Resources/Albinos.png";
     private Vector<Rabbit> rabbitVector = new Vector();
