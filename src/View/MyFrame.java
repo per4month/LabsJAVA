@@ -84,7 +84,7 @@ public class MyFrame extends JFrame implements KeyListener {
                 new Font("Times New Roman", Font.BOLD, 20),
                 Color.BLACK);
 
-        JLabel simpleRabbitsLabel = createLabel("Ordinary: " + controller.getRabbitSimple(),
+        JLabel simpleRabbitsLabel = createLabel("Simple: " + controller.getRabbitSimple(),
                 SwingConstants.CENTER,
                 new Font("Times New Roman", Font.BOLD, 20),
                 Color.BLACK);
