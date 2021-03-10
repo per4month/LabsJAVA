@@ -3,14 +3,15 @@ package View;
 import Habitat.Habitat;
 import Controller.Controller;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.io.IOException;
-
 
 public class MyFrame extends JFrame implements KeyListener {
     Habitat habitat;
@@ -42,6 +43,8 @@ public class MyFrame extends JFrame implements KeyListener {
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(true);
+
+
     }
 
     public void updateTime(int time) {

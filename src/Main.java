@@ -6,5 +6,4 @@ public class Main {
         MyFrame frame = new MyFrame();
 
     }
-
-    }
+}
