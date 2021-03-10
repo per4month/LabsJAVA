@@ -12,7 +12,7 @@ public class RabbitAlbinos extends Rabbit {
 
     static {
         try {
-            image = ImageIO.read(new File("src/resources/Albinos.png"));
+            image = ImageIO.read(new File("src/Resources/Albinos.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
