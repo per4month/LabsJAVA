@@ -7,13 +7,15 @@ import java.util.Random;
 
 import Rabbit.*;
 import View.*;
+import bornProcess.bornProcess;
+import Controller.Controller;
 
 public class Habitat {
     private int N1;
     private int N2;
     private int P1;
     private double K;
-    private Controller controller
+    private Controller controller;
     private int WIDTH = 600;
     private int HEIGHT = 600;
     private MyFrame myframe
@@ -22,7 +24,7 @@ public class Habitat {
     private Vector<Rabbit> rabbitVector = new Vector();
     private Timer timer = new Timer();
     private boolean bornProcessOn = false;
-    BornProcess bornProcess = new BornProcess(this);
+    bornProcess bornProcess = new bornProcess(this);
 
     public Habitat(int N1, int N2, int P1, double K, MyFrame myframe) {
         this.N1 = N1;
