@@ -92,7 +92,7 @@ public class Habitat {
 
     public void refreshRabbitPopulation() {
         RabbitSimple.countOfSimple = 0;
-        RabbitAlbinos.countOfRabbits = 0;
+        RabbitAlbinos.countOfAlbinos = 0;
         Rabbit.countOfRabbits = 0;
     }
 
