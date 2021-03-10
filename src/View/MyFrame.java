@@ -76,32 +76,32 @@ public class MyFrame extends JFrame implements KeyListener {
     }
 
     private void showFinishDialog() {
-        JDialog dialog = new JDialog(this, "Born process is finished", true);
+        JDialog dialog = new JDialog(this, "RESULTS", true);
         JPanel panel = new JPanel(new GridLayout(5, 1));
 
         JLabel messageLabel = createLabel("Born process is finished. Here are results: ",
                 SwingConstants.CENTER,
-                new Font("Serif", Font.BOLD, 16),
+                new Font("Times New Roman", Font.BOLD, 20),
                 Color.BLACK);
 
         JLabel simpleRabbitsLabel = createLabel("Ordinary: " + controller.getRabbitSimple(),
                 SwingConstants.CENTER,
-                new Font("Courier New", Font.ITALIC, 16),
-                Color.RED);
+                new Font("Times New Roman", Font.BOLD, 20),
+                Color.BLACK);
 
         JLabel albinosRabbitsLabel = createLabel("Albinos: " + controller.getRabbitAlbinos(),
                 SwingConstants.CENTER,
-                new Font("Times New Roman", Font.BOLD, 16),
-                Color.MAGENTA);
+                new Font("Times New Roman", Font.BOLD, 20),
+                Color.BLACK);
 
         JLabel allRabbitsCount = createLabel("All rabbits: " + controller.getAllRabbitsCount(),
                 SwingConstants.CENTER,
-                new Font("Times New Roman", Font.ITALIC, 16),
-                Color.ORANGE);
+                new Font("Times New Roman", Font.BOLD, 20),
+                Color.BLACK);
 
         JLabel timeLabel = createLabel("Passed time: " + time / 60 + " minutes " + time % 60 + " seconds",
                 SwingConstants.CENTER,
-                new Font("Arial", Font.PLAIN, 16),
+                new Font("Times New Roman", Font.BOLD, 20),
                 Color.BLUE);
 
         panel.add(messageLabel);
@@ -112,7 +112,7 @@ public class MyFrame extends JFrame implements KeyListener {
         dialog.add(panel);
 
         dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        dialog.setPreferredSize(new Dimension(300,300));
+        dialog.setPreferredSize(new Dimension(400,400));
         dialog.setResizable(false);
         dialog.pack();
         dialog.setLocationRelativeTo(this);
