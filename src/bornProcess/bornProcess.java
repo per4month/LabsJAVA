@@ -14,7 +14,10 @@ public class bornProcess extends TimerTask {
     public bornProcess(Habitat h) {
         this.h = h;
     }
-
+    public bornProcess(Habitat h, int time) {
+        this.h = h;
+        this.gameSec = time;
+    }
     @Override
     public void run() {
         sec++;

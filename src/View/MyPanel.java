@@ -1,6 +1,6 @@
 package View;
 import Rabbit.*;
-
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +24,7 @@ public class MyPanel extends JPanel {
             e.printStackTrace();
         }
     }
+
     public void drawRabbits(Vector<Rabbit> rabbits) {
         this.rabbits = rabbits;
         repaint();
@@ -45,5 +46,8 @@ public class MyPanel extends JPanel {
     public void configureController(Controller controller) {
         this.controller = controller;
     }
-
+    public void refreshField() {
+        rabbits = new Vector<>();
+        repaint();
+    }
 }

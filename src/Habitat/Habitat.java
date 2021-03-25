@@ -23,6 +23,7 @@ public class Habitat {
     final private String pathToAlbinos = "src/Resources/Albinos.png";
     private Vector<Rabbit> rabbitVector = new Vector<>();
     private Timer timer = new Timer();
+    private int time = 0;
     private boolean bornProcessOn = false;
     bornProcess bornProcess = new bornProcess(this);
 
@@ -75,7 +76,11 @@ public class Habitat {
 
         }
     }
-
+    public void refreshRabbitPopulation() {
+        RabbitSimple.countOfSimple = 0;
+        RabbitAlbinos.countOfAlbinos = 0;
+        Rabbit.countOfRabbits = 0;
+    }
     public void startBorn() {
         bornProcessOn = true;
         timer.schedule(bornProcess,0, 1000);
@@ -89,13 +94,30 @@ public class Habitat {
         rabbitVector  = new Vector();
         bornProcessOn = false;
     }
-
-    public void refreshRabbitPopulation() {
-        RabbitSimple.countOfSimple = 0;
-        RabbitAlbinos.countOfAlbinos = 0;
-        Rabbit.countOfRabbits = 0;
+    public void pauseBorn() {
+        timer.cancel();
+        timer.purge();
+    }
+    public void resumeBorn() {
+        timer = new Timer();
+        bornProcess = new bornProcess(this, time);
+        timer.schedule(bornProcess, 0, 1000);
+    }
+    public void setN1(int N1) {
+        this.N1 = N1;
     }
 
+    public void setN2(int N2) {
+        this.N2 = N2;
+    }
+
+    public void setP1(int P1) {
+        this.P1 = P1;
+    }
+
+    public void setK(int K) {
+        this.K = K;
+    }
     public void confifureController(Controller controller) {
         this.controller = controller;
     }
