@@ -209,7 +209,7 @@ public class ControlPanel extends JPanel {
         albinosProbability.setSelectedIndex(Arrays.asList(probabilitiesArray).indexOf(K));
         albinosProbability.setFocusable(false);
         albinosProbability.addActionListener(actionEvent -> {
-            controller.setP1(albinosProbability.getItemAt(albinosProbability.getSelectedIndex()));
+            controller.setK(albinosProbability.getItemAt(albinosProbability.getSelectedIndex()));// гавно
         });
         с.gridx = 1;
         с.gridy = 0;

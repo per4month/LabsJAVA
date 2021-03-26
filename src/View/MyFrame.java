@@ -264,7 +264,7 @@ public class MyFrame extends JFrame implements KeyListener {
         JMenu ordinaryMenu = new JMenu("Ordinary");
         JMenu albinosMenu = new JMenu("Albinos");
         simpleProbability = new JMenu("Probability");
-        albinosProbability = new JMenu("Probability");
+        albinosProbability = new JMenu("Critical part");
         JMenu ordinaryTimeBornPeriod = new JMenu("Generation period");
         JMenu albinosTimeBornPeriod = new JMenu("Generation period");
 
