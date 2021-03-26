@@ -253,7 +253,7 @@ public class ControlPanel extends JPanel {
         });
         albinosPanel.add(albinosGenPeriod, с);
 
-        JLabel probabilityLabel = new JLabel("Probability (%):");
+        JLabel probabilityLabel = new JLabel("Critical part (%):");
         с.gridx = 0;
         с.gridy = 0;
         albinosPanel.add(probabilityLabel, с);
