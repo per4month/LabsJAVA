@@ -10,6 +10,7 @@ import View.*;
 import bornProcess.bornProcess;
 import Controller.Controller;
 
+
 public class Habitat {
     private int N1;
     private int N2;
@@ -36,10 +37,14 @@ public class Habitat {
     }
 
     private Point generatePoint() {
-        int x = (int) (Math.random() * (myframe.getWidth() - 100));
-        int y = (int) (Math.random() * (myframe.getHeight() - 100));
+        int frameWidth = myframe.getWidth(), frameHeight = myframe.getHeight();
+
+        int withBorder = myframe.getWidth() - 500; //change 500 to ContropPanel size
+        int x = (int) (Math.random() * (withBorder - 100));
+        int y = (int) (Math.random() * (myframe.getHeight() - 150)); //crutch
         return new Point(x, y);
     }
+
     boolean isSimpleBorn(int N1, int P1, int time) {
         int prob = (int)(Math.random()*100 +1);
         return prob <= P1 && time % N1 == 0;
@@ -118,6 +123,7 @@ public class Habitat {
     public void setK(int K) {
         this.K = K;
     }
+
     public void confifureController(Controller controller) {
         this.controller = controller;
     }

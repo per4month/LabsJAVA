@@ -103,7 +103,7 @@ public class MyFrame extends JFrame implements KeyListener {
     public void keyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_B:
-                try {
+               try {
                     Music.playSound("src/Resources/Music.wav");
                 } catch (LineUnavailableException e) {
                     e.printStackTrace();
@@ -172,6 +172,8 @@ public class MyFrame extends JFrame implements KeyListener {
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (res == JOptionPane.OK_OPTION) {
             controller.refreshField();
+            controller.refreshRabbitPopulation();
+            //refresh rabbits here!!!!!
             return true;
         } else {
             return false;
