@@ -124,7 +124,7 @@ public class MyFrame extends JFrame implements KeyListener {
                 Music.stopSound();
                 if (controller.isBornProcessOn()) {
                     if (controller.isInfoDialogEnabled()) {
-                        controller.stopBornProcess();
+                        controller.pauseBornProcess();
                         if (showFinishDialog()) {
                             controller.stopBornProcess();
                             controller.setStartButtonState();

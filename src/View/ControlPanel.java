@@ -79,7 +79,7 @@ public class ControlPanel extends JPanel {
             stopButton.setEnabled(false);
 
             if (isInfoDialogEnabled()) {
-                controller.stopBornProcess();
+                controller.pauseBornProcess();
                 if (!controller.showInfoDialog()) {
                     startButton.setEnabled(false);
                     stopButton.setEnabled(true);
