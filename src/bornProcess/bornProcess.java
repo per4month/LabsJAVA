@@ -10,7 +10,7 @@ public class bornProcess extends TimerTask {
     int sec;
     int gameSec;
     int min;
-
+    public int getGameSec(){ return gameSec; }
     public bornProcess(Habitat h) {
         this.h = h;
     }

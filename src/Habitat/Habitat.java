@@ -25,6 +25,7 @@ public class Habitat {
     private Vector<Rabbit> rabbitVector = new Vector<>();
     private Timer timer = new Timer();
     private int time = 0;
+    private int pastTime = 0;
     private boolean bornProcessOn = false;
     bornProcess bornProcess = new bornProcess(this);
 
@@ -102,12 +103,13 @@ public class Habitat {
         bornProcessOn = false;
     }
     public void pauseBorn() {
+        pastTime = bornProcess.getGameSec();
         timer.cancel();
         timer.purge();
     }
     public void resumeBorn() {
         timer = new Timer();
-        bornProcess = new bornProcess(this, time);
+        bornProcess = new bornProcess(this, time+pastTime);
         timer.schedule(bornProcess, 0, 1000);
     }
     public void setN1(int N1) {
