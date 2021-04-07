@@ -10,30 +10,32 @@ import View.*;
 import bornProcess.bornProcess;
 import Controller.Controller;
 
-
 public class Habitat {
     private int N1;
     private int N2;
     private int P1;
     private double K;
+    private int D1;
+    private int D2;
     private Controller controller;
     private int WIDTH = 600;
     private int HEIGHT = 600;
     private MyFrame myframe;
     final private String pathToSimple = "src/Resources/Simple.png";
     final private String pathToAlbinos = "src/Resources/Albinos.png";
-    private Vector<Rabbit> rabbitVector = new Vector<>();
     private Timer timer = new Timer();
     private int time = 0;
     private int pastTime = 0;
     private boolean bornProcessOn = false;
     bornProcess bornProcess = new bornProcess(this);
 
-    public Habitat(int N1, int N2, int P1, double K, MyFrame myframe) {
+    public Habitat(int N1, int N2, int P1, double K, MyFrame myframe, int D1, int D2) {
         this.N1 = N1;
         this.N2 = N2;
         this.P1 = P1;
         this.K = K;
+        this.D1 = D1;
+        this.D2 = D2;
         this.myframe = myframe;
     }
 
@@ -66,23 +68,30 @@ public class Habitat {
     }
     public void update (int time) {
         Factory fact;
+        RabbitsStorage storage = RabbitsStorage.getInstance();
+        this.time = time;
+
         controller.passTime(time);
-        if(isAlbinosBorn(N1,K,time)) {
+
+        if(isAlbinosBorn(N2,K,time)) {
             fact = new FactoryAlbinos();
             Point randomPoint = generatePoint();
-            Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToAlbinos);
-            rabbitVector.add(newRabbit);
-            controller.toPaint(rabbitVector);
-
+            Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToAlbinos, time, time + D2);
+            storage.getRabbitsList().add(newRabbit);
+            storage.getAliveRabbits().add(newRabbit.getUUID());
+            storage.getRabbitsBornTime().put(newRabbit.getUUID(), newRabbit.getBirthTime());
         }
         if(isSimpleBorn(N1,P1,time)) {
             fact = new FactorySimple();
             Point randomPoint = generatePoint();
-            Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToSimple);
-            rabbitVector.add(newRabbit);
-            controller.toPaint(rabbitVector);
-
+            Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToSimple, time, time + D1);
+            storage.getRabbitsList().add(newRabbit);
+            storage.getAliveRabbits().add(newRabbit.getUUID());
+            storage.getRabbitsBornTime().put(newRabbit.getUUID(), newRabbit.getBirthTime());
         }
+
+        storage.removeRabbits(time);
+        controller.toPaint(storage.getRabbitsList());
     }
     public void refreshRabbitPopulation() {
         RabbitSimple.countOfSimple = 0;
@@ -99,7 +108,7 @@ public class Habitat {
         timer.purge();
         timer = new Timer();
         bornProcess = new bornProcess(this);
-        rabbitVector  = new Vector();
+        RabbitsStorage.getInstance().reset();
         bornProcessOn = false;
     }
     public void pauseBorn() {
@@ -127,6 +136,18 @@ public class Habitat {
     public void setK(int K) {
         this.K = K;
     }
+
+    public void setD1(int D1) {
+        this.D1 = D1;
+    }
+
+    public void setD2(int D2) {
+        this.D2 = D2;
+    }
+
+    public int getD1() { return D1; }
+
+    public int getD2() { return D2; }
 
     public void confifureController(Controller controller) {
         this.controller = controller;

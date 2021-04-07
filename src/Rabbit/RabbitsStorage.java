@@ -4,12 +4,11 @@ import Rabbit.RabbitAlbinos;
 import Rabbit.RabbitSimple;
 import Rabbit.Rabbit;
 
-
 import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
-class RabbitsStorage {
+public class RabbitsStorage {
     private static RabbitsStorage instance; //сущность - объект
     //Коллекции
     private Vector<Rabbit> rabbitsList; //для хранения кроликов

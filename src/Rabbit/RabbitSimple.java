@@ -18,8 +18,8 @@ public class RabbitSimple extends Rabbit {
     }
 
 
-    RabbitSimple(int x, int y, String pathToImg) {
-        super(x, y, pathToImg);
+    RabbitSimple(int x, int y, String pathToImg, int birthTime, int deathTime) {
+        super(x, y, pathToImg, birthTime, deathTime);
         countOfSimple++;
         countOfRabbits++;
 
