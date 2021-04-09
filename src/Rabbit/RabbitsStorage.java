@@ -7,7 +7,7 @@ import java.util.Vector;
 public class RabbitsStorage {
     private static RabbitsStorage instance; //сущность - объект
     //Коллекции
-    private Vector<Rabbit> rabbitVector; //для хранения кроликов, переименовала на вектор, потому что у нас не список
+    private Vector<Rabbit> rabbitVector; //для хранения кроликов
     private TreeSet<String> aliveRabbits; //для хранения и поиска уникальных идентификаторов
     private HashMap<String,Integer> rabbitsBornTime; //для хранения времени рождения объектов
 
@@ -33,15 +33,19 @@ public class RabbitsStorage {
     public HashMap<String, Integer> getRabbitsBornTime() {
         return rabbitsBornTime;
     }
-    public void reset(){
-        instance.rabbitsBornTime = new HashMap<>();
-        instance.aliveRabbits = new TreeSet<>();
-        instance.rabbitVector = new Vector<>();
+
+    public void reset(){ // функция перевсоздания коллекций! (поменяла нью на налл)
+        instance.rabbitsBornTime = null;
+        instance.aliveRabbits = null;
+        instance.rabbitVector = null;
+        instance = null;
     }
+
     public void removeRabbits(int gameSec) {
         for (int i = 0; i < rabbitVector.size(); i++) {
             Rabbit rabbit = rabbitVector.get(i);
-            if (gameSec == rabbit.getDeathTime()) {
+            int deathTime = rabbit.getDeathTime();
+            if (gameSec == deathTime) {
                 if (rabbit instanceof RabbitSimple) {
                     RabbitSimple.countOfSimple--;
                 }
@@ -49,9 +53,11 @@ public class RabbitsStorage {
                     RabbitAlbinos.countOfAlbinos--;
                 }
                 Rabbit.countOfRabbits--;
-                rabbitVector.remove(i);
+                //rabbitVector.remove(i);
+                rabbitVector.remove(rabbit);
                 aliveRabbits.remove(rabbit.getUUID());
                 rabbitsBornTime.remove(rabbit.getUUID());
+                i--;
             }
         }
     }

@@ -23,7 +23,7 @@ public class Habitat {
     final private String pathToAlbinos = "src/Resources/Albinos.png";
     private Timer timer = new Timer();
     private int time = 0;
-    private int pastTime = 0;
+    //private int pastTime = 0;
     private boolean bornProcessOn = false;
     bornProcess bornProcess = new bornProcess(this);
 
@@ -51,8 +51,6 @@ public class Habitat {
         return prob <= P1 && time % N1 == 0;
     }
     boolean isAlbinosBorn(int N2, double K, int time) {
-        /*int coa = RabbitAlbinos.countOfAlbinos;
-        int cor = Rabbit.countOfRabbits;*/
         return time % N2 == 0 && RabbitAlbinos.countOfAlbinos < Rabbit.countOfRabbits*(K/100);
     }
     public int getWidth() {
@@ -96,7 +94,7 @@ public class Habitat {
         RabbitSimple.countOfSimple = 0;
         RabbitAlbinos.countOfAlbinos = 0;
         Rabbit.countOfRabbits = 0;
-
+        RabbitsStorage.getInstance().reset();
     }
     public void startBorn() {
         bornProcessOn = true;
@@ -112,13 +110,13 @@ public class Habitat {
         bornProcessOn = false;
     }
     public void pauseBorn() {
-        pastTime = bornProcess.getGameSec();
+        //pastTime = bornProcess.getGameSec();
         timer.cancel();
         timer.purge();
     }
     public void resumeBorn() {
         timer = new Timer();
-        bornProcess = new bornProcess(this, time+pastTime);
+        bornProcess = new bornProcess(this, time);
         timer.schedule(bornProcess, 0, 1000);
     }
     public void setN1(int N1) {

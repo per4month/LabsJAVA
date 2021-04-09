@@ -3,6 +3,7 @@ package View;
 import Controller.Controller;
 import Habitat.Habitat;
 import Rabbit.Rabbit;
+import Rabbit.RabbitsStorage;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -43,7 +44,7 @@ public class ControlPanel extends JPanel {
     Controller controller;
 
 
-    ControlPanel(int N1, int N2, int P1, int K, int D1, int D2, Vector<Rabbit> rabbitVector) {
+    ControlPanel(int N1, int N2, int P1, int K, int D1, int D2, Vector<Rabbit> rabbitVector) { //исправить тут, если получится
         super();
         setLayout(new GridLayout(6,1));
         setBorder(this, "Control panel");
@@ -52,7 +53,7 @@ public class ControlPanel extends JPanel {
         configureSimplePanel(N1, P1);
         configureAlbinosPanel(N2, K);
         configureLifeTimePanel(D1, D2);
-        configureInfoPanel(rabbitVector);
+        configureInfoPanel();
     }
     private void configureButtonsPanel() {
         buttonsPanel = new JPanel(new GridBagLayout());
@@ -384,7 +385,7 @@ public class ControlPanel extends JPanel {
        add(lifeTimePanel);
     }
 
-    private void configureInfoPanel(Vector<Rabbit> rabbitVector){
+    private void configureInfoPanel(){
         currentInfoPanel = new JPanel(new GridBagLayout());
         setBorder(currentInfoPanel, "Info panel");
         GridBagConstraints c = new GridBagConstraints();
@@ -395,11 +396,13 @@ public class ControlPanel extends JPanel {
         c.ipadx = 75;
         currentInfoPanel.add(currentObjectsButton);
         add(currentInfoPanel);
-
         currentObjectsButton.addActionListener(listener -> {
+            Vector<Rabbit> rabbitVector = RabbitsStorage.getInstance().getRabbitVector();
             String infoMessage = "";
-            for (int i = 0; i < rabbitVector.size(); i++) {
-                infoMessage += rabbitVector.get(i).getBirthTime() + " " + rabbitVector.get(i).getUUID() + "\n";
+            if (!(RabbitsStorage.getInstance() == null || rabbitVector == null)){
+                for (int i = 0; i < rabbitVector.size(); i++) {
+                    infoMessage += rabbitVector.get(i).getBirthTime() + " " + rabbitVector.get(i).getDeathTime() + " " + rabbitVector.get(i).getUUID() + "\n";
+                }
             }
             final String fInfoMessage = infoMessage;
             JPanel panel = new JPanel(new GridLayout(1, 1));
@@ -413,10 +416,6 @@ public class ControlPanel extends JPanel {
 
         });
     }
-
-
-
-
 
 
 
