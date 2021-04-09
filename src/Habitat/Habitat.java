@@ -2,8 +2,6 @@ package Habitat;
 
 import java.awt.*;
 import java.util.*;
-import java.util.Vector;
-import java.util.Random;
 
 import Rabbit.*;
 import View.*;
@@ -77,7 +75,7 @@ public class Habitat {
             fact = new FactoryAlbinos();
             Point randomPoint = generatePoint();
             Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToAlbinos, time, time + D2);
-            storage.getRabbitsList().add(newRabbit);
+            storage.getRabbitVector().add(newRabbit);
             storage.getAliveRabbits().add(newRabbit.getUUID());
             storage.getRabbitsBornTime().put(newRabbit.getUUID(), newRabbit.getBirthTime());
         }
@@ -85,18 +83,20 @@ public class Habitat {
             fact = new FactorySimple();
             Point randomPoint = generatePoint();
             Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToSimple, time, time + D1);
-            storage.getRabbitsList().add(newRabbit);
+            storage.getRabbitVector().add(newRabbit);
             storage.getAliveRabbits().add(newRabbit.getUUID());
             storage.getRabbitsBornTime().put(newRabbit.getUUID(), newRabbit.getBirthTime());
         }
 
         storage.removeRabbits(time);
-        controller.toPaint(storage.getRabbitsList());
+        controller.toPaint(storage.getRabbitVector());
     }
-    public void refreshRabbitPopulation() {
+
+    public void refreshRabbitPopulation() { // не обновляется вектор: не чистится нигде, не могу найти где он толком создаётся, чтоб его почистить (ну и остальные хранилища)
         RabbitSimple.countOfSimple = 0;
         RabbitAlbinos.countOfAlbinos = 0;
         Rabbit.countOfRabbits = 0;
+
     }
     public void startBorn() {
         bornProcessOn = true;

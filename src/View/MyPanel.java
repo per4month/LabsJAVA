@@ -1,6 +1,6 @@
 package View;
 import Rabbit.*;
-import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +26,7 @@ public class MyPanel extends JPanel {
     }
 
     public void drawRabbits(Vector<Rabbit> rabbits) {
-        this.rabbits = rabbits;
+        this.rabbits = RabbitsStorage.getInstance().getRabbitVector();
         repaint();
     }
     @Override

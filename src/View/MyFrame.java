@@ -2,24 +2,25 @@ package View;
 
 import Habitat.Habitat;
 import Controller.Controller;
+import Rabbit.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
 import java.io.IOException;
+
 
 public class MyFrame extends JFrame implements KeyListener {
     final private int N1 = 1;
     final private int N2 = 2;
     final private int P1 = 100;
     final private int K = 50;
+    private int D1 = 5;
+    private int D2 = 5;
     Habitat habitat;
     Controller controller;
     MyPanel myField;
@@ -34,6 +35,9 @@ public class MyFrame extends JFrame implements KeyListener {
 
     private JTextField albinosGenPeriodTextField;
     private JTextField ordinaryGenPeriodTextField;
+    private JTextField albinosLifeTimeTextField;
+    private JTextField ordinaryLifeTimeTextField;
+
 
     private JMenuItem startItem;
     private JMenuItem stopItem;
@@ -45,15 +49,16 @@ public class MyFrame extends JFrame implements KeyListener {
     private JMenu simpleProbability;
     private JMenu albinosProbability;
 
+
     @Override
     public void keyTyped(KeyEvent keyEvent) { }
 
     @Override
     public void keyReleased(KeyEvent keyEvent) { }
     public MyFrame() {
-        habitat = new Habitat(N1, N2, P1, K, this);
+        habitat = new Habitat(N1, N2, P1, K, this, D1, D2);
         myField = new MyPanel();
-        controlPanel = new ControlPanel(N1, N2, P1, K);
+        controlPanel = new ControlPanel(N1, N2, P1, K, D1, D2, RabbitsStorage.getInstance().getRabbitVector());
         controller = new Controller(myField, habitat, this, controlPanel);
         habitat.confifureController(controller);
         myField.configureController(controller);
@@ -154,6 +159,14 @@ public class MyFrame extends JFrame implements KeyListener {
     public void configureController(Controller controller) {
         this.controller = controller;
     }
+
+    /*public static void showCurrentInformationPanel(String fInfoMessage){
+        JPanel panel = new JPanel(new GridLayout(1, 1)); // вот это гавно не рабочее
+        JTextArea area = new JTextArea();
+        area.setEditable(false);
+        area.setText(fInfoMessage);
+        panel.add(area);
+    }*/
 
     public boolean showFinishDialog() {
         JPanel panel = new JPanel(new GridLayout(1, 1));
@@ -265,6 +278,8 @@ public class MyFrame extends JFrame implements KeyListener {
         JMenu albinosMenu = new JMenu("Albinos");
         simpleProbability = new JMenu("Probability");
         albinosProbability = new JMenu("Critical part");
+        JMenu ordinaryLifeTime = new JMenu("Life time");
+        JMenu albinosLifeTime = new JMenu("Life time");
         JMenu ordinaryTimeBornPeriod = new JMenu("Generation period");
         JMenu albinosTimeBornPeriod = new JMenu("Generation period");
 
@@ -302,6 +317,78 @@ public class MyFrame extends JFrame implements KeyListener {
         });
         ordinaryTimeBornPeriod.add(ordinaryGenPeriodTextField);
 
+
+
+        ordinaryLifeTimeTextField = new JTextField();
+        ordinaryLifeTimeTextField.setText(String.valueOf(D1));
+        ordinaryLifeTimeTextField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                setFocusable(true);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setFocusable(true);
+            }
+        });
+        ordinaryLifeTimeTextField.addActionListener(action -> {
+            if (!ordinaryLifeTimeTextField.getText().isEmpty()) {
+                try {
+                    controller.setD1(Integer.parseInt(ordinaryLifeTimeTextField.getText()));
+                } catch (NumberFormatException a) {
+                    ordinaryLifeTimeTextField.setText(String.valueOf(D1));
+                    JOptionPane.showMessageDialog(null,
+                            "You have set wrong parameters!",
+                            "Warning: wrong parameters",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                ordinaryLifeTimeTextField.setText(String.valueOf(D1));
+                JOptionPane.showMessageDialog(null,
+                        "You have set wrong parameters!",
+                        "Warning: wrong parameters",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        });
+        ordinaryLifeTime.add(ordinaryLifeTimeTextField);
+
+
+        albinosLifeTimeTextField = new JTextField();
+        albinosLifeTimeTextField.setText(String.valueOf(D2));
+        albinosLifeTimeTextField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                setFocusable(true);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setFocusable(true);
+            }
+        });
+        albinosLifeTimeTextField.addActionListener(action -> {
+            if (!albinosLifeTimeTextField.getText().isEmpty()) {
+                try {
+                    controller.setD2(Integer.parseInt(albinosLifeTimeTextField.getText()));
+                } catch (NumberFormatException a) {
+                    albinosLifeTimeTextField.setText(String.valueOf(D2));
+                    JOptionPane.showMessageDialog(null,
+                            "You have set wrong parameters!",
+                            "Warning: wrong parameters",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                albinosLifeTimeTextField.setText(String.valueOf(D2));
+                JOptionPane.showMessageDialog(null,
+                        "You have set wrong parameters!",
+                        "Warning: wrong parameters",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        });
+        albinosLifeTime.add(albinosLifeTimeTextField);
+
+
         albinosGenPeriodTextField = new JTextField();
         albinosGenPeriodTextField.setText(String.valueOf(N2));
         albinosGenPeriodTextField.addMouseListener(new MouseAdapter() {
@@ -334,6 +421,7 @@ public class MyFrame extends JFrame implements KeyListener {
                         JOptionPane.WARNING_MESSAGE);
             }
         });
+
         albinosTimeBornPeriod.add(albinosGenPeriodTextField);
 
         ButtonGroup albinosButtonGroup = new ButtonGroup();
@@ -361,8 +449,10 @@ public class MyFrame extends JFrame implements KeyListener {
 
         ordinaryMenu.add(simpleProbability);
         ordinaryMenu.add(ordinaryTimeBornPeriod);
+        ordinaryMenu.add(ordinaryLifeTime);
         albinosMenu.add(albinosProbability);
         albinosMenu.add(albinosTimeBornPeriod);
+        albinosMenu.add(albinosLifeTime);
         rabbitsMenu.add(ordinaryMenu);
         rabbitsMenu.add(albinosMenu);
         menuBar.add(rabbitsMenu);
@@ -405,6 +495,11 @@ public class MyFrame extends JFrame implements KeyListener {
     public void setN2(int N2) {
         albinosGenPeriodTextField.setText(String.valueOf(N2));
     }
+
+    public void setD1(int D1){ordinaryLifeTimeTextField.setText(String.valueOf(D1));}
+
+    public void setD2(int D2){albinosGenPeriodTextField.setText(String.valueOf(D2));}
+
 
     public void setP1(int P1) {
         simpleProbability.removeAll();

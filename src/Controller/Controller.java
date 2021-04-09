@@ -131,5 +131,18 @@ public class Controller {
         controlPanel.setK(K);
         frame.setK(K);
     }
+
+    public void setD1(int D1) {
+        habitat.setD1(D1);
+        controlPanel.setD1(D1);
+        frame.setD1(D1);
+    }
+
+    public void setD2(int D2) {
+        habitat.setD2(D2);
+        controlPanel.setD2(D2);
+        frame.setD2(D2);
+    }
+
 }
 

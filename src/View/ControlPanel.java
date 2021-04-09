@@ -1,6 +1,8 @@
 package View;
 
 import Controller.Controller;
+import Habitat.Habitat;
+import Rabbit.Rabbit;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -11,31 +13,46 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Vector;
+
 public class ControlPanel extends JPanel {
     private JPanel buttonsPanel; // panel for buttons
     private JPanel timePanel; // panel for time
     private JPanel albinosPanel;
     private JPanel simplePanel;
+    private JPanel lifeTimePanel;
+    private JPanel currentInfoPanel;
+
     private JButton startButton = new JButton("Start"); // button start
     private JButton stopButton = new JButton("Stop"); // button stop
+    private JButton currentObjectsButton = new JButton("Current objects"); // button objects
+
     private JRadioButton timeShowOnButton; // show time
     private JRadioButton timeShowOffButton; //hide time
     private JRadioButton dialogRadioButton;
+
     private JTextField albinosGenPeriod;
     private JTextField simpleGenPeriod;
+    private JTextField simpleLifeTime;
+    private JTextField albinosLifeTime;
 
     private JComboBox<Integer> simpleProbability;
     private JComboBox<Integer> albinosProbability;
     final private Integer[] probabilitiesArray = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+
     Controller controller;
-    ControlPanel(int N1, int N2, int P1, int K) {
+
+
+    ControlPanel(int N1, int N2, int P1, int K, int D1, int D2, Vector<Rabbit> rabbitVector) {
         super();
-        setLayout(new GridLayout(4,1));
+        setLayout(new GridLayout(6,1));
         setBorder(this, "Control panel");
         configureButtonsPanel();
         configureTimePanel();
         configureSimplePanel(N1, P1);
         configureAlbinosPanel(N2, K);
+        configureLifeTimePanel(D1, D2);
+        configureInfoPanel(rabbitVector);
     }
     private void configureButtonsPanel() {
         buttonsPanel = new JPanel(new GridBagLayout());
@@ -71,6 +88,7 @@ public class ControlPanel extends JPanel {
             }
             startButton.setEnabled(false);
             stopButton.setEnabled(true);
+            currentObjectsButton.setEnabled(true);
             controller.startBornProcess();
         });
         stopButton.addActionListener(listener -> {
@@ -268,6 +286,139 @@ public class ControlPanel extends JPanel {
         add(albinosPanel);
     }
 
+   private void configureLifeTimePanel(int D1, int D2){
+        lifeTimePanel = new JPanel(new GridBagLayout());
+        setBorder(lifeTimePanel, "Life time");
+        GridBagConstraints с = new GridBagConstraints();
+
+       simpleLifeTime = new JTextField();
+       simpleLifeTime.setText(String.valueOf(D1));
+       с.gridx = 1;
+       с.gridy = 0;
+       с.ipadx = 75;
+
+       simpleLifeTime.addMouseListener(new MouseAdapter() {
+           @Override
+           public void mouseClicked(MouseEvent e) {
+               setFocusable(true);
+           }
+
+           @Override
+           public void mouseEntered(MouseEvent e) {
+               setFocusable(true);
+           }
+       });
+       simpleLifeTime.addActionListener(action -> {
+           if (!simpleLifeTime.getText().isEmpty()) {
+               try {
+                   controller.setD1(Integer.parseInt(simpleLifeTime.getText())); // как тут ошибка, если я прописала функцию эту???
+               } catch (NumberFormatException a) {
+                   simpleLifeTime.setText(String.valueOf(D1));
+                   JOptionPane.showMessageDialog(null,
+                           "You have set wrong parameters!",
+                           "Warning: wrong parameters",
+                           JOptionPane.WARNING_MESSAGE);
+               }
+           } else {
+               simpleLifeTime.setText(String.valueOf(D1));
+               JOptionPane.showMessageDialog(null,
+                       "You have set wrong parameters!",
+                       "Warning: wrong parameters",
+                       JOptionPane.WARNING_MESSAGE);
+           }
+       });
+       lifeTimePanel.add(simpleLifeTime, с);
+
+       albinosLifeTime = new JTextField();
+       albinosLifeTime.setText(String.valueOf(D1));
+       с.gridx = 1;
+       с.gridy = 1;
+       с.ipadx = 75;
+
+       albinosLifeTime.addMouseListener(new MouseAdapter() {
+           @Override
+           public void mouseClicked(MouseEvent e) {
+               setFocusable(true);
+           }
+
+           @Override
+           public void mouseEntered(MouseEvent e) {
+               setFocusable(true);
+           }
+       });
+       albinosLifeTime.addActionListener(action -> {
+           if (!albinosLifeTime.getText().isEmpty()) {
+               try {
+                   controller.setD2(Integer.parseInt(albinosLifeTime.getText()));
+               } catch (NumberFormatException a) {
+                   albinosLifeTime.setText(String.valueOf(D2));
+                   JOptionPane.showMessageDialog(null,
+                           "You have set wrong parameters!",
+                           "Warning: wrong parameters",
+                           JOptionPane.WARNING_MESSAGE);
+               }
+           } else {
+               albinosLifeTime.setText(String.valueOf(D2));
+               JOptionPane.showMessageDialog(null,
+                       "You have set wrong parameters!",
+                       "Warning: wrong parameters",
+                       JOptionPane.WARNING_MESSAGE);
+           }
+       });
+       lifeTimePanel.add(albinosLifeTime, с);
+
+
+       JLabel ordinaryLifeTimeLabel = new JLabel("Ordinary life time:");
+       с.gridx = 0;
+       с.gridy = 0;
+       lifeTimePanel.add(ordinaryLifeTimeLabel, с);
+       JLabel albinosLifeTimeLabel = new JLabel("Albinos life time:");
+       с.gridx = 0;
+       с.gridy = 1;
+       lifeTimePanel.add(albinosLifeTimeLabel, с);
+
+       lifeTimePanel.setVisible(true);
+       lifeTimePanel.setFocusable(false);
+
+
+       add(lifeTimePanel);
+    }
+
+    private void configureInfoPanel(Vector<Rabbit> rabbitVector){
+        currentInfoPanel = new JPanel(new GridBagLayout());
+        setBorder(currentInfoPanel, "Info panel");
+        GridBagConstraints c = new GridBagConstraints();
+        currentObjectsButton.setEnabled(false);
+        currentObjectsButton.setFocusable(false);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.ipadx = 75;
+        currentInfoPanel.add(currentObjectsButton);
+        add(currentInfoPanel);
+
+        currentObjectsButton.addActionListener(listener -> {
+            String infoMessage = "";
+            for (int i = 0; i < rabbitVector.size(); i++) {
+                infoMessage += rabbitVector.get(i).getBirthTime() + " " + rabbitVector.get(i).getUUID() + "\n";
+            }
+            final String fInfoMessage = infoMessage;
+            JPanel panel = new JPanel(new GridLayout(1, 1));
+            JTextArea area = new JTextArea();
+            area.setEditable(false);
+            area.setText(fInfoMessage);
+            panel.add(area);
+
+            int res = JOptionPane.showConfirmDialog(null, panel, "Current rabbits info",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        });
+    }
+
+
+
+
+
+
 
     private void setBorder(JPanel panel, String text) {
         panel.setBorder(BorderFactory.createCompoundBorder(
@@ -276,6 +427,7 @@ public class ControlPanel extends JPanel {
                         text, TitledBorder.RIGHT, TitledBorder.TOP),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
     }
+
     public void configureController(Controller controller) {
         this.controller = controller;
     }
@@ -321,6 +473,10 @@ public class ControlPanel extends JPanel {
     public void setN2(int N2) {
         albinosGenPeriod.setText(String.valueOf(N2));
     }
+
+    public void setD1(int D1){ simpleLifeTime.setText(String.valueOf(D1)); }
+
+    public void setD2(int D2){ albinosLifeTime.setText(String.valueOf(D2)); }
 
     public void setP1(int P1) {
        simpleProbability.setSelectedIndex(Arrays.asList(probabilitiesArray).indexOf(P1));
