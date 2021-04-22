@@ -22,7 +22,7 @@ public class OrdinaryAI extends BaseAI {
             public void run() {
                 changeRoute();
             }
-        }, 0, 3000);
+        }, 0, 2000);
     }
 
     void update() {
@@ -36,7 +36,7 @@ public class OrdinaryAI extends BaseAI {
                 RabbitSimple rabbit = (RabbitSimple) rabbitsList.get(i);
                 int rabbitX = rabbit.getX();
                 int rabbitY = rabbit.getY();
-                int speed = 30;
+                int speed = 5;
                 if (rabbitX + speed > 600) {
                     routeX = -1;
                 }

@@ -98,7 +98,7 @@ public class Habitat {
     }
     public void startBorn() {
         bornProcessOn = true;
-        timer.schedule(bornProcess,0, 100);
+        timer.schedule(bornProcess,0, 1000);
     }
 
     public void stopBorn() {
