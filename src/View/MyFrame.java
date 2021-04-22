@@ -32,6 +32,10 @@ public class MyFrame extends JFrame implements KeyListener {
     private JRadioButtonMenuItem timeOnRadioButton;
     private JRadioButtonMenuItem timeOffRadioButton;
     private JRadioButtonMenuItem showDialogRadioButton;
+    private JRadioButtonMenuItem AIAlbinosOnButton;
+    private JRadioButtonMenuItem AIAlbinosOffButton;
+    private JRadioButtonMenuItem AIOrdinaryOnButton;
+    private JRadioButtonMenuItem AIOrdinaryOffButton;
 
     private JTextField albinosGenPeriodTextField;
     private JTextField ordinaryGenPeriodTextField;
@@ -282,7 +286,10 @@ public class MyFrame extends JFrame implements KeyListener {
         JMenu albinosLifeTime = new JMenu("Life time");
         JMenu ordinaryTimeBornPeriod = new JMenu("Generation period");
         JMenu albinosTimeBornPeriod = new JMenu("Generation period");
-
+        JMenu ordinaryAI = new JMenu("AI Mode");
+        JMenu albinosAI = new JMenu("AI Mode");
+        JMenu priorityAlbinos = new JMenu("Priority");
+        JMenu priorityOrdinary = new JMenu("Priority");
         ordinaryGenPeriodTextField = new JTextField();
         ordinaryGenPeriodTextField.setText(String.valueOf(N1));
         ordinaryGenPeriodTextField.addMouseListener(new MouseAdapter() {
@@ -447,12 +454,46 @@ public class MyFrame extends JFrame implements KeyListener {
             simpleProbability.add(ordinaryBoxMenuItem);
         }
 
+        AIAlbinosOnButton = new JRadioButtonMenuItem("On", true);
+        AIAlbinosOffButton = new JRadioButtonMenuItem("Off");
+
+        AIAlbinosOnButton.addActionListener(actionEvent -> {
+            AIAlbinosOnButton.setSelected(true);
+            AIAlbinosOffButton.setSelected(false);
+            controller.turnAlbinosAIOn();
+        });
+        AIAlbinosOffButton.addActionListener(actionEvent -> {
+            AIAlbinosOnButton.setSelected(false);
+            AIAlbinosOffButton.setSelected(true);
+            controller.turnAlbinosAIOff();
+        });
+        albinosAI.add(AIAlbinosOnButton);
+        albinosAI.add(AIAlbinosOffButton);
+
+        AIOrdinaryOnButton = new JRadioButtonMenuItem("On", true);
+        AIOrdinaryOffButton = new JRadioButtonMenuItem("Off");
+
+        AIOrdinaryOnButton.addActionListener(actionEvent -> {
+            AIOrdinaryOnButton.setSelected(true);
+            AIOrdinaryOffButton.setSelected(false);
+            controller.turnOrdinaryAIOn();
+        });
+        AIOrdinaryOffButton.addActionListener(actionEvent -> {
+            AIOrdinaryOnButton.setSelected(false);
+            AIOrdinaryOffButton.setSelected(true);
+            controller.turnOrdinaryAIOff();
+        });
+        ordinaryAI.add(AIOrdinaryOnButton);
+        ordinaryAI.add(AIOrdinaryOffButton);
+
         ordinaryMenu.add(simpleProbability);
         ordinaryMenu.add(ordinaryTimeBornPeriod);
         ordinaryMenu.add(ordinaryLifeTime);
+        ordinaryMenu.add(ordinaryAI);
         albinosMenu.add(albinosProbability);
         albinosMenu.add(albinosTimeBornPeriod);
         albinosMenu.add(albinosLifeTime);
+        albinosMenu.add(albinosAI);
         rabbitsMenu.add(ordinaryMenu);
         rabbitsMenu.add(albinosMenu);
         menuBar.add(rabbitsMenu);

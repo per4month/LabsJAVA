@@ -2,6 +2,8 @@ package Controller;
 import Rabbit.Rabbit;
 import Rabbit.RabbitAlbinos;
 import Rabbit.RabbitSimple;
+import Rabbit.AlbinosAI;
+import Rabbit.OrdinaryAI;
 import Habitat.Habitat;
 import View.*;
 import java.util.Vector;
@@ -11,11 +13,18 @@ public class Controller {
     private Habitat habitat;
     private MyFrame frame;
     private ControlPanel controlPanel;
+    private AlbinosAI albinosAI;
+    private OrdinaryAI ordinaryAI;
+
     public Controller(MyPanel myField, Habitat habitat, MyFrame frame, ControlPanel controlPanel) {
         this.m = myField;
         this.habitat = habitat;
         this.frame = frame;
         this.controlPanel = controlPanel;
+        this.albinosAI = new AlbinosAI();
+        albinosAI.start();
+        this.ordinaryAI = new OrdinaryAI();
+        ordinaryAI.start();
     }
 
     public void toPaint(Vector<Rabbit> rabbits) {
@@ -142,6 +151,44 @@ public class Controller {
         habitat.setD2(D2);
         controlPanel.setD2(D2);
         frame.setD2(D2);
+    }
+
+    public void turnOrdinaryAIOn() {
+        if (!ordinaryAI.isAIActive()) {
+            try {
+                ordinaryAI.startAI();
+                ordinaryAI.wait();
+            } catch (Exception eInterrupted) {}
+        }
+    }
+
+    public void turnOrdinaryAIOff() {
+        if (ordinaryAI.isAIActive()) {
+            ordinaryAI.stopAI();
+        }
+    }
+
+    public void turnAlbinosAIOff() {
+        if (albinosAI.isAIActive()) {
+            albinosAI.stopAI();
+        }
+    }
+
+    public void turnAlbinosAIOn() {
+        if (!albinosAI.isAIActive()) {
+            try {
+                albinosAI.startAI();
+                albinosAI.wait();
+            } catch (Exception eInterrupted) {}
+        }
+    }
+
+    public void changeOrdinaryPriority(int priority) {
+        ordinaryAI.setAIPriority(priority);
+    }
+
+    public void changeAlbinosPriority(int priority) {
+        albinosAI.setAIPriority(priority);
     }
 
 }

@@ -23,6 +23,7 @@ public class ControlPanel extends JPanel {
     private JPanel simplePanel;
     private JPanel lifeTimePanel;
     private JPanel currentInfoPanel;
+    private JPanel panelAI;
 
     private JButton startButton = new JButton("Start"); // button start
     private JButton stopButton = new JButton("Stop"); // button stop
@@ -39,14 +40,22 @@ public class ControlPanel extends JPanel {
 
     private JComboBox<Integer> simpleProbability;
     private JComboBox<Integer> albinosProbability;
+    private JComboBox<Integer> ordinaryPriorityComboBox;
+    private JComboBox<Integer> albinosPriorityComboBox;
     final private Integer[] probabilitiesArray = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+    final private Integer[] prioritiesArray = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+    private JRadioButton ordinaryAIRadioButtonOn;
+    private JRadioButton albinosAIRadioButtonOn;
+    private JRadioButton ordinaryAIRadioButtonOff;
+    private JRadioButton albinosAIRadioButtonOff;
 
     Controller controller;
 
 
     ControlPanel(int N1, int N2, int P1, int K, int D1, int D2, Vector<Rabbit> rabbitVector) { //исправить тут, если получится
         super();
-        setLayout(new GridLayout(6,1));
+        setLayout(new GridLayout(7,1));
         setBorder(this, "Control panel");
         configureButtonsPanel();
         configureTimePanel();
@@ -54,6 +63,7 @@ public class ControlPanel extends JPanel {
         configureAlbinosPanel(N2, K);
         configureLifeTimePanel(D1, D2);
         configureInfoPanel();
+        configurePanelAI();
     }
     private void configureButtonsPanel() {
         buttonsPanel = new JPanel(new GridBagLayout());
@@ -113,7 +123,7 @@ public class ControlPanel extends JPanel {
         });
     }
     private void configureTimePanel() {
-        timePanel = new JPanel(new GridLayout(3,1));
+        timePanel = new JPanel(new GridLayout(2,2));
 
         setBorder(timePanel, "Simulation info");
 
@@ -383,6 +393,97 @@ public class ControlPanel extends JPanel {
 
 
        add(lifeTimePanel);
+    }
+
+    private void configurePanelAI(){
+        panelAI = new JPanel(new GridBagLayout());
+        setBorder(panelAI, "AI");
+        GridBagConstraints с = new GridBagConstraints();
+        albinosAIRadioButtonOn = new JRadioButton("Albinos On", true);
+        albinosAIRadioButtonOn.addActionListener(action -> {
+            albinosAIRadioButtonOn.setSelected(true);
+            albinosAIRadioButtonOff.setSelected(false);
+            controller.turnAlbinosAIOn();
+        });
+        albinosAIRadioButtonOn.setFocusable(false);
+        albinosAIRadioButtonOn.setFocusPainted(false);
+        с.gridx = 0;
+        с.gridy = 0;
+        panelAI.add(albinosAIRadioButtonOn, с);
+
+        albinosAIRadioButtonOff = new JRadioButton("Albinos Off", true);
+        albinosAIRadioButtonOff.setSelected(false);
+        albinosAIRadioButtonOff. addActionListener(action -> {
+            albinosAIRadioButtonOff.setSelected(true);
+            albinosAIRadioButtonOn.setSelected(false);
+            controller.turnAlbinosAIOff();
+        });
+        albinosAIRadioButtonOff.setFocusable(false);
+        albinosAIRadioButtonOff.setFocusPainted(false);
+        с.gridx = 1;
+        с.gridy = 0;
+        panelAI.add(albinosAIRadioButtonOff, с);
+
+        ordinaryAIRadioButtonOn = new JRadioButton("Ordinary On", true);
+        ordinaryAIRadioButtonOn.addActionListener(action -> {
+            ordinaryAIRadioButtonOn.setSelected(true);
+            ordinaryAIRadioButtonOff.setSelected(false);
+            controller.turnOrdinaryAIOn();
+        });
+        ordinaryAIRadioButtonOn.setFocusable(false);
+        ordinaryAIRadioButtonOn.setFocusPainted(false);
+        с.gridx = 0;
+        с.gridy = 1;
+        panelAI.add(ordinaryAIRadioButtonOn, с);
+
+        ordinaryAIRadioButtonOff = new JRadioButton("Ordinary Off", true);
+        ordinaryAIRadioButtonOff.setSelected(false);
+        ordinaryAIRadioButtonOff. addActionListener(action -> {
+            ordinaryAIRadioButtonOff.setSelected(true);
+            ordinaryAIRadioButtonOn.setSelected(false);
+            controller.turnOrdinaryAIOff();
+        });
+        ordinaryAIRadioButtonOff.setFocusable(false);
+        ordinaryAIRadioButtonOff.setFocusPainted(false);
+        с.gridx = 1;
+        с.gridy = 1;
+        panelAI.add(ordinaryAIRadioButtonOff, с);
+
+
+        JLabel priorityLabelAlbinos = new JLabel("- Priority Albinos");
+        с.gridx = 3;
+        с.gridy = 0;
+        panelAI.add(priorityLabelAlbinos, с);
+
+        albinosPriorityComboBox = new JComboBox<>(prioritiesArray);
+        albinosPriorityComboBox.setSelectedIndex(Arrays.asList(prioritiesArray).indexOf(5));
+        albinosPriorityComboBox.setFocusable(false);
+        albinosPriorityComboBox.addActionListener(actionEvent -> {
+            controller.changeAlbinosPriority(albinosPriorityComboBox.getItemAt(albinosPriorityComboBox.getSelectedIndex()));
+        });
+        с.gridx = 2;
+        с.gridy = 0;
+        panelAI.add(albinosPriorityComboBox, с);
+
+        JLabel priorityLabelOrdinary = new JLabel("- Priority Ordinary");
+        с.gridx = 3;
+        с.gridy = 1;
+        panelAI.add(priorityLabelOrdinary, с);
+
+        ordinaryPriorityComboBox = new JComboBox<>(prioritiesArray);
+        ordinaryPriorityComboBox.setSelectedIndex(Arrays.asList(prioritiesArray).indexOf(5));
+        ordinaryPriorityComboBox.setFocusable(false);
+        ordinaryPriorityComboBox.addActionListener(actionEvent -> {
+            controller.changeOrdinaryPriority(ordinaryPriorityComboBox.getItemAt(ordinaryPriorityComboBox.getSelectedIndex()));
+        });
+        с.gridx = 2;
+        с.gridy = 1;
+        panelAI.add(ordinaryPriorityComboBox, с);
+
+        panelAI.setVisible(true);
+        panelAI.setFocusable(false);
+
+        add(panelAI);
     }
 
     private void configureInfoPanel(){
