@@ -103,7 +103,8 @@ public class MyFrame extends JFrame implements KeyListener {
     }
 
     public void updateTime(int time) {
-        this.time = time;
+        this.time = time / 100;
+        time /= 100;
         timeLabel.setText("Passed time: " + time / 60 + " minutes " + time % 60 + " seconds");
     }
 

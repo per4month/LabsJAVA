@@ -13,7 +13,7 @@ public class AlbinosAI extends BaseAI {
             public void run() {
                 update();
             }
-        }, 0, 1000);
+        }, 0, 10);
     }
 
     void update() {
@@ -26,7 +26,7 @@ public class AlbinosAI extends BaseAI {
             if (rabbitsList.get(i) instanceof RabbitAlbinos) {
                 RabbitAlbinos rabbit = (RabbitAlbinos) rabbitsList.get(i);
                 int rabbitX = rabbit.getX();
-                int speed = 100;
+                int speed = 1;
                 if (rabbitX + speed > 600) {
                     route = -1;
                 }

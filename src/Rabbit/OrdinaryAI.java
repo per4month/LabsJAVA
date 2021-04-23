@@ -16,13 +16,13 @@ public class OrdinaryAI extends BaseAI {
             public void run() {
                 update();
             }
-        }, 0, 1000);
+        }, 0, 10); //возможно потребуется изменить
         Timer changeRouteTimer = new Timer();
         changeRouteTimer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 changeRoute();
             }
-        }, 0, 2000);
+        }, 0, 10); //возможно потребуется изменить
     }
 
     void update() {
@@ -36,7 +36,7 @@ public class OrdinaryAI extends BaseAI {
                 RabbitSimple rabbit = (RabbitSimple) rabbitsList.get(i);
                 int rabbitX = rabbit.getX();
                 int rabbitY = rabbit.getY();
-                int speed = 5;
+                int speed = 1;
                 if (rabbitX + speed > 600) {
                     routeX = -1;
                 }

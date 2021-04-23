@@ -69,24 +69,24 @@ public class Habitat {
 
         controller.passTime(time);
 
-        if(isAlbinosBorn(N2,K,time)) {
+        if(isAlbinosBorn(N2,K,time/100) && time % 100 == 0) {
             fact = new FactoryAlbinos();
             Point randomPoint = generatePoint();
-            Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToAlbinos, time, time + D2);
+            Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToAlbinos, time, time + D2*100);
             storage.getRabbitVector().add(newRabbit);
             storage.getAliveRabbits().add(newRabbit.getUUID());
             storage.getRabbitsBornTime().put(newRabbit.getUUID(), newRabbit.getBirthTime());
         }
-        if(isSimpleBorn(N1,P1,time)) {
+        if(isSimpleBorn(N1,P1,time/100) && time % 100 == 0) {
             fact = new FactorySimple();
             Point randomPoint = generatePoint();
-            Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToSimple, time, time + D1);
+            Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToSimple, time, time + D1*100);
             storage.getRabbitVector().add(newRabbit);
             storage.getAliveRabbits().add(newRabbit.getUUID());
             storage.getRabbitsBornTime().put(newRabbit.getUUID(), newRabbit.getBirthTime());
         }
 
-        storage.removeRabbits(time);
+        if (time % 100 == 0) storage.removeRabbits(time/100);
         controller.toPaint(storage.getRabbitVector());
     }
 
@@ -98,7 +98,8 @@ public class Habitat {
     }
     public void startBorn() {
         bornProcessOn = true;
-        timer.schedule(bornProcess,0, 1000);
+        //timer.schedule(bornProcess,0, 1000);
+        timer.schedule(bornProcess,0, 10);
     }
 
     public void stopBorn() {
@@ -117,7 +118,7 @@ public class Habitat {
     public void resumeBorn() {
         timer = new Timer();
         bornProcess = new bornProcess(this, time);
-        timer.schedule(bornProcess, 0, 1000);
+        timer.schedule(bornProcess, 0, 100);
     }
     public void setN1(int N1) {
         this.N1 = N1;

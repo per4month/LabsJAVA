@@ -44,7 +44,7 @@ public class RabbitsStorage {
     public void removeRabbits(int gameSec) {
         for (int i = 0; i < rabbitVector.size(); i++) {
             Rabbit rabbit = rabbitVector.get(i);
-            int deathTime = rabbit.getDeathTime();
+            int deathTime = rabbit.getDeathTime()/100;
             if (gameSec == deathTime) {
                 if (rabbit instanceof RabbitSimple) {
                     RabbitSimple.countOfSimple--;
