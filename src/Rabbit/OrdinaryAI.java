@@ -7,8 +7,8 @@ import java.util.TimerTask;
 import java.util.Vector;
 
 public class OrdinaryAI extends BaseAI {
-    private int routeX = 1;
-    private int routeY = 1;
+    //private int routeX = 1;
+    //private int routeY = 1;
 
     public synchronized void run(){
         timer = new Timer();
@@ -22,7 +22,7 @@ public class OrdinaryAI extends BaseAI {
             public void run() {
                 changeRoute();
             }
-        }, 0, 10); //возможно потребуется изменить
+        }, 0, 3000); //возможно потребуется изменить
     }
 
     void update() {
@@ -38,19 +38,23 @@ public class OrdinaryAI extends BaseAI {
                 int rabbitY = rabbit.getY();
                 int speed = 1;
                 if (rabbitX + speed > 600) {
-                    routeX = -1;
+                    rabbit.setRoteX(-1);
                 }
+
                 if (rabbitX - speed < 0) {
-                    routeX = 1;
+                    rabbit.setRoteX(1);
                 }
+
                 if (rabbitY + speed > 600) {
-                    routeY = -1;
+                    rabbit.setRoteY(-1);
                 }
+
                 if (rabbitY - speed < 0) {
-                    routeY = 1;
+                    rabbit.setRoteY(1);
                 }
-                rabbit.setX(rabbitX + speed * routeX);
-                rabbit.setY(rabbitY + speed * routeY);
+
+                rabbit.setX(rabbitX + speed * rabbit.getRoteX());
+                rabbit.setY(rabbitY + speed * rabbit.getRoteY());
             }
         }
     }
@@ -58,7 +62,15 @@ public class OrdinaryAI extends BaseAI {
     private void changeRoute() {
         int max = 1;
         int min = 1;
-        routeX = (int) (Math.random() * ++max) + min;
-        routeY = (int) (Math.random() * ++max) + min;
+        Vector<Rabbit> rabbitsList = RabbitsStorage.getInstance().getRabbitVector();
+        for (int i = 0; i < rabbitsList.size(); i++) {
+            if (rabbitsList.get(i) instanceof RabbitSimple) {
+                RabbitSimple rabbit = (RabbitSimple) rabbitsList.get(i);
+                rabbit.setRoteX((int) (Math.random() * ++max) + min);
+                rabbit.setRoteY((int) (Math.random() * ++max) + min);
+            }
+        }
+        //routeX = (int) (Math.random() * ++max) + min;
+        //routeY = (int) (Math.random() * ++max) + min;
     }
 }

@@ -10,6 +10,9 @@ public abstract class Rabbit implements IBehaviour {
     private String uuid;
     private int x;
     private int y;
+    private int routeX;
+    private int routeY;
+
 
     Rabbit(int x, int y, String pathToImg, int birthTime, int deathTime) {
         this.x = x;
@@ -18,6 +21,8 @@ public abstract class Rabbit implements IBehaviour {
         this.birthTime = birthTime;
         this.deathTime = deathTime;
         this.uuid = UUID.randomUUID().toString();
+        this.routeX = 1;
+        this.routeY = 1;
         //countOfRabbits++;
     }
 
@@ -35,6 +40,22 @@ public abstract class Rabbit implements IBehaviour {
 
     public String getUUID() {
         return uuid;
+    }
+
+    public int getRoteX() {
+        return routeX;
+    }
+
+    public int getRoteY() {
+        return routeY;
+    }
+
+    public void setRoteX(int rote) {
+        routeX = rote;
+    }
+
+    public void setRoteY(int rote) {
+        routeY = rote;
     }
 
     @Override

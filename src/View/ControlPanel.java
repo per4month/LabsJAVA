@@ -502,7 +502,7 @@ public class ControlPanel extends JPanel {
             String infoMessage = "";
             if (!(RabbitsStorage.getInstance() == null || rabbitVector == null)){
                 for (int i = 0; i < rabbitVector.size(); i++) {
-                    infoMessage += rabbitVector.get(i).getBirthTime() + " " + rabbitVector.get(i).getDeathTime() + " " + rabbitVector.get(i).getUUID() + "\n";
+                    infoMessage += rabbitVector.get(i).getBirthTime()/100 + " " + rabbitVector.get(i).getDeathTime()/100 + " " + rabbitVector.get(i).getUUID() + "\n";
                 }
             }
             final String fInfoMessage = infoMessage;
