@@ -27,7 +27,7 @@ public class AlbinosAI extends BaseAI {
                 RabbitAlbinos rabbit = (RabbitAlbinos) rabbitsList.get(i);
                 int rabbitX = rabbit.getX();
                 int speed = 1;
-                if (rabbitX + speed > 600) {
+                if (rabbitX + speed > 712) {
                     route = -1;
                 }
                 if (rabbitX - speed < 0) {

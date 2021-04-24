@@ -37,7 +37,7 @@ public class OrdinaryAI extends BaseAI {
                 int rabbitX = rabbit.getX();
                 int rabbitY = rabbit.getY();
                 int speed = 1;
-                if (rabbitX + speed > 600) {
+                if (rabbitX + speed > 712) {
                     rabbit.setRoteX(-1);
                 }
 
@@ -45,7 +45,7 @@ public class OrdinaryAI extends BaseAI {
                     rabbit.setRoteX(1);
                 }
 
-                if (rabbitY + speed > 600) {
+                if (rabbitY + speed > 424) {
                     rabbit.setRoteY(-1);
                 }
 
