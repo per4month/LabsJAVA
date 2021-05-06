@@ -27,6 +27,9 @@ public class ControlPanel extends JPanel {
 
     private JButton startButton = new JButton("Start"); // button start
     private JButton stopButton = new JButton("Stop"); // button stop
+    private JButton consoleButton = new JButton("Console"); // button console
+    private JButton saveButton = new JButton("Save"); // button save
+    private JButton loadButton = new JButton("Load"); // button load
     private JButton currentObjectsButton = new JButton("Current objects"); // button objects
 
     private JRadioButton timeShowOnButton; // show time
@@ -74,6 +77,13 @@ public class ControlPanel extends JPanel {
         stopButton.setEnabled(false);
         stopButton.setFocusable(false);
         startButton.setFocusable(false);
+
+        //for lab 5
+        saveButton.setEnabled(true);
+        loadButton.setEnabled(true);
+        saveButton.setFocusable(false);
+        loadButton.setFocusable(false);
+
         c.gridx = 0;
         c.gridy = 0;
         c.ipadx = 50;
@@ -83,6 +93,16 @@ public class ControlPanel extends JPanel {
         c.gridy = 1;
         c.ipadx = 50;
         buttonsPanel.add(stopButton, c);
+
+       c.gridx = 1;
+        c.gridy = 0;
+        c.ipadx = 50;
+        buttonsPanel.add(saveButton, c);
+
+        c.gridx = 1;
+        c.gridy = 1;
+        c.ipadx = 50;
+        buttonsPanel.add(loadButton, c);
 
         setBorder(buttonsPanel, "Simulation control");
         buttonsPanel.setVisible(true);
@@ -100,6 +120,7 @@ public class ControlPanel extends JPanel {
             startButton.setEnabled(false);
             stopButton.setEnabled(true);
             currentObjectsButton.setEnabled(true);
+            consoleButton.setEnabled(true);
             controller.startBornProcess();
         });
         stopButton.addActionListener(listener -> {
@@ -121,6 +142,16 @@ public class ControlPanel extends JPanel {
                 controller.refreshRabbitPopulation();
             }
         });
+
+        saveButton.addActionListener(listener -> {
+
+        });
+
+        loadButton.addActionListener(listener -> {
+
+        });
+
+
     }
     private void configureTimePanel() {
         timePanel = new JPanel(new GridLayout(2,2));
@@ -490,12 +521,21 @@ public class ControlPanel extends JPanel {
         currentInfoPanel = new JPanel(new GridBagLayout());
         setBorder(currentInfoPanel, "Info panel");
         GridBagConstraints c = new GridBagConstraints();
+
         currentObjectsButton.setEnabled(false);
         currentObjectsButton.setFocusable(false);
         c.gridx = 0;
         c.gridy = 0;
-        c.ipadx = 75;
-        currentInfoPanel.add(currentObjectsButton);
+        c.ipadx = 50;
+        currentInfoPanel.add(currentObjectsButton, c);
+
+        consoleButton.setEnabled(false);
+        consoleButton.setFocusable(false);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.ipadx = 50;
+        currentInfoPanel.add(consoleButton, c);
+
         add(currentInfoPanel);
         currentObjectsButton.addActionListener(listener -> {
             Vector<Rabbit> rabbitVector = RabbitsStorage.getInstance().getRabbitVector();
@@ -516,6 +556,12 @@ public class ControlPanel extends JPanel {
                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         });
+
+        consoleButton.addActionListener(listener -> {
+
+
+        });
+
     }
 
 
