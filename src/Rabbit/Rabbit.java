@@ -1,8 +1,9 @@
 package Rabbit;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public abstract class Rabbit implements IBehaviour {
+public abstract class Rabbit implements IBehaviour, Serializable {
     public static int countOfRabbits = 0;
     private String pathToImg;
     private int birthTime;
@@ -33,6 +34,10 @@ public abstract class Rabbit implements IBehaviour {
     public int getBirthTime() {
         return birthTime;
     }
+
+    public void setBirthTime(int bT) { birthTime = bT; }
+
+    public void setDeathTime(int dT) {deathTime = dT; }
 
     public int getDeathTime() {
         return deathTime;

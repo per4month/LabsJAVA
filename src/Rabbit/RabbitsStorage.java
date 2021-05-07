@@ -61,4 +61,22 @@ public class RabbitsStorage {
             }
         }
     }
+
+    public void setAllRabbits(Vector<Rabbit> rabbits) {
+        rabbitVector.addAll(rabbits);
+        RabbitAlbinos.countOfAlbinos = 0;
+        RabbitSimple.countOfSimple = 0;
+        Rabbit.countOfRabbits = 0;
+        for (int i = 0; i < rabbitVector.size(); i++) {
+            Rabbit rabbit = rabbitVector.get(i);
+            Rabbit.countOfRabbits++;
+            if (rabbit instanceof RabbitSimple) {
+                RabbitSimple.countOfSimple++;
+            } else {
+                RabbitAlbinos.countOfAlbinos++;
+            }
+            aliveRabbits.add(rabbit.getUUID());
+            rabbitsBornTime.put(rabbit.getUUID(), rabbit.getBirthTime());
+        }
+    }
 }

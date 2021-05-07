@@ -22,7 +22,7 @@ public class Habitat {
     final private String pathToSimple = "src/Resources/Simple.png";
     final private String pathToAlbinos = "src/Resources/Albinos.png";
     private Timer timer = new Timer();
-    private int time = 0;
+    private static int time = 0;
     //private int pastTime = 0;
     private boolean bornProcessOn = false;
     bornProcess bornProcess = new bornProcess(this);
@@ -35,6 +35,15 @@ public class Habitat {
         this.D1 = D1;
         this.D2 = D2;
         this.myframe = myframe;
+    }
+
+    public Habitat() {
+        this.N1 = 0;
+        this.N2 = 0;
+        this.P1 = 0;
+        this.K = 0;
+        this.D1 = 0;
+        this.D2 = 0;
     }
 
     private Point generatePoint() {
@@ -143,6 +152,8 @@ public class Habitat {
     public void setD2(int D2) {
         this.D2 = D2;
     }
+
+    public int getTime() {return time;}
 
     public int getD1() { return D1; }
 
