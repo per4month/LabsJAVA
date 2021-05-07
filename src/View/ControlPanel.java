@@ -5,6 +5,7 @@ import Habitat.Habitat;
 import Rabbit.Rabbit;
 import Rabbit.RabbitsStorage;
 import utils.Serialization;
+import utils.Configuration;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -14,6 +15,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -119,6 +121,16 @@ public class ControlPanel extends JPanel {
             } catch (UnsupportedAudioFileException e) {
                 e.printStackTrace();
             }
+
+            ArrayList<Integer> parameters = Configuration.loadConfig();
+
+            controller.setN1(parameters.get(0));
+            controller.setP1(parameters.get(1));
+            controller.setN2(parameters.get(2));
+            controller.setK(parameters.get(3));
+            controller.setD1(parameters.get(4));
+            controller.setD2((parameters.get(5)));
+
             startButton.setEnabled(false);
             stopButton.setEnabled(true);
             currentObjectsButton.setEnabled(true);
@@ -129,6 +141,8 @@ public class ControlPanel extends JPanel {
             Music.stopSound();
             startButton.setEnabled(true);
             stopButton.setEnabled(false);
+
+            Configuration.saveConfig();
 
             if (isInfoDialogEnabled()) {
                 controller.pauseBornProcess();

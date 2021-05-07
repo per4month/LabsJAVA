@@ -118,37 +118,37 @@ public class Controller {
     }
 
     public void setN1(int N1) {
-        habitat.setN1(N1);
+        Habitat.setN1(N1);
         controlPanel.setN1(N1);
         frame.setN1(N1);
     }
 
     public void setN2(int N2) {
-        habitat.setN2(N2);
+        Habitat.setN2(N2);
         controlPanel.setN2(N2);
         frame.setN2(N2);
     }
 
     public void setP1(int P1) {
-        habitat.setP1(P1);
+        Habitat.setP1(P1);
         controlPanel.setP1(P1);
         frame.setP1(P1);
     }
 
     public void setK(int K) {
-        habitat.setK(K);
+        Habitat.setK(K);
         controlPanel.setK(K);
         frame.setK(K);
     }
 
     public void setD1(int D1) {
-        habitat.setD1(D1);
+        Habitat.setD1(D1);
         controlPanel.setD1(D1);
         frame.setD1(D1);
     }
 
     public void setD2(int D2) {
-        habitat.setD2(D2);
+        Habitat.setD2(D2);
         controlPanel.setD2(D2);
         frame.setD2(D2);
     }
