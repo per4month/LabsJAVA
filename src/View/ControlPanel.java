@@ -14,8 +14,14 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class ControlPanel extends JPanel {
@@ -535,6 +541,14 @@ public class ControlPanel extends JPanel {
 
         consoleButton.setEnabled(false);
         consoleButton.setFocusable(false);
+        JPanel consolePanel = new JPanel(new GridLayout(1, 1));
+        JTextArea areaConsole = new JTextArea();
+        areaConsole.setEditable(true);
+        areaConsole.setLineWrap(true);
+        areaConsole.setText("Available command: delete Albinos K. Changes probability to K" + '\n');
+        consolePanel.setAutoscrolls(true);
+        consolePanel.setPreferredSize(new Dimension(700,400));
+        consolePanel.add(areaConsole);
         c.gridx = 0;
         c.gridy = 1;
         c.ipadx = 50;
@@ -563,6 +577,67 @@ public class ControlPanel extends JPanel {
 
         consoleButton.addActionListener(listener -> {
 
+
+            if (JOptionPane.showConfirmDialog(null, consolePanel, "Console",
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                Component pan = consolePanel.getComponent(0);
+                if (pan.getClass().equals(JTextArea.class)) {
+                    PipedInputStream input = new PipedInputStream();
+                    PipedOutputStream output = new PipedOutputStream();
+                    try {
+                        output.connect(input);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Scanner fieldInput = new Scanner(input);
+                    PrintStream fieldOutput = new PrintStream(output);
+                    String txt = ((JTextArea) pan).getText();
+                    String last = "";
+                    for(String temp : txt.split("\n")) {
+                        last = temp;
+                    }
+                    //System.out.println(last);
+                    // System.out.println(txt);
+                    fieldOutput.println(last);
+                    //System.out.println(fieldInput);
+                    ((JTextArea) pan).setText("");
+                    String line = fieldInput.nextLine();
+                    ((JTextArea) pan).setText(txt + '\n');
+                    try {
+                        if(line.contains("delete Albinos") && line.matches(".*\\d+.*")) {
+                            Pattern pattern = Pattern.compile("\\d+");
+                            Matcher matcher = pattern.matcher(line);
+                            int start = 0;
+                            int result = 0;
+                            while (matcher.find(start)) {
+                                String value = line.substring(matcher.start(), matcher.end());
+                                result = Integer.parseInt(value);
+
+                                start = matcher.end();
+                            }
+                            if(result % 10 == 0) {
+                                try {
+                                    this.setK(result);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                ((JTextArea) pan).setText(txt + '\n' + "Successfully changed K to " + result + '\n');
+                                //System.out.println(result);
+                            }
+                            else ((JTextArea) pan).setText(txt + '\n' + "Failed. K must be % 10 " + '\n');
+                        }
+                        else {
+                            ((JTextArea) pan).setText(txt + '\n' + "Failed" + '\n');
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            } else {
+                // no option
+            }
 
         });
 
