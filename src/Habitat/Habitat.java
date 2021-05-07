@@ -9,12 +9,13 @@ import bornProcess.bornProcess;
 import Controller.Controller;
 
 public class Habitat {
-    private int N1;
-    private int N2;
-    private int P1;
-    private double K;
-    private int D1;
-    private int D2;
+    private static int N1;
+    private static int N2;
+    private static int P1;
+    //private static double K;
+    private static int K;
+    private static int D1;
+    private static int D2;
     private Controller controller;
     private int WIDTH = 600;
     private int HEIGHT = 600;
@@ -27,7 +28,7 @@ public class Habitat {
     private boolean bornProcessOn = false;
     bornProcess bornProcess = new bornProcess(this);
 
-    public Habitat(int N1, int N2, int P1, double K, MyFrame myframe, int D1, int D2) {
+    public Habitat(int N1, int N2, int P1, int K, MyFrame myframe, int D1, int D2) {
         this.N1 = N1;
         this.N2 = N2;
         this.P1 = P1;
@@ -56,46 +57,51 @@ public class Habitat {
     }
 
     boolean isSimpleBorn(int N1, int P1, int time) {
-        int prob = (int)(Math.random()*100 +1);
+        int prob = (int) (Math.random() * 100 + 1);
         return prob <= P1 && time % N1 == 0;
     }
-    boolean isAlbinosBorn(int N2, double K, int time) {
-        return time % N2 == 0 && RabbitAlbinos.countOfAlbinos < Rabbit.countOfRabbits*(K/100);
+
+    boolean isAlbinosBorn(int N2, int K, int time) {
+        return time % N2 == 0 && RabbitAlbinos.countOfAlbinos < Rabbit.countOfRabbits * ((double)K / 100);
     }
+
     public int getWidth() {
         return WIDTH;
     }
+
     public int getHeight() {
         return HEIGHT;
     }
+
     public boolean isBornProcessOn() {
         return bornProcessOn;
     }
-    public void update (int time) {
+
+    public void update(int time) {
         Factory fact;
         RabbitsStorage storage = RabbitsStorage.getInstance();
         this.time = time;
 
         controller.passTime(time);
 
-        if(isAlbinosBorn(N2,K,time/100) && time % 100 == 0) {
+        if (isAlbinosBorn(N2, K, time / 100) && time % 100 == 0) {
             fact = new FactoryAlbinos();
             Point randomPoint = generatePoint();
-            Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToAlbinos, time, time + D2*100);
+            Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToAlbinos, time, time + D2 * 100);
             storage.getRabbitVector().add(newRabbit);
             storage.getAliveRabbits().add(newRabbit.getUUID());
             storage.getRabbitsBornTime().put(newRabbit.getUUID(), newRabbit.getBirthTime());
         }
-        if(isSimpleBorn(N1,P1,time/100) && time % 100 == 0) {
+        if (isSimpleBorn(N1, P1, time / 100) && time % 100 == 0) {
             fact = new FactorySimple();
             Point randomPoint = generatePoint();
-            Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToSimple, time, time + D1*100);
+            Rabbit newRabbit = fact.rabbitBorn(randomPoint.x, randomPoint.y, pathToSimple, time, time + D1 * 100);
             storage.getRabbitVector().add(newRabbit);
             storage.getAliveRabbits().add(newRabbit.getUUID());
             storage.getRabbitsBornTime().put(newRabbit.getUUID(), newRabbit.getBirthTime());
         }
 
-        if (time % 100 == 0) storage.removeRabbits(time/100);
+        if (time % 100 == 0) storage.removeRabbits(time / 100);
         controller.toPaint(storage.getRabbitVector());
     }
 
@@ -105,10 +111,11 @@ public class Habitat {
         Rabbit.countOfRabbits = 0;
         RabbitsStorage.getInstance().reset();
     }
+
     public void startBorn() {
         bornProcessOn = true;
         //timer.schedule(bornProcess,0, 1000);
-        timer.schedule(bornProcess,0, 10);
+        timer.schedule(bornProcess, 0, 10);
     }
 
     public void stopBorn() {
@@ -119,45 +126,70 @@ public class Habitat {
         RabbitsStorage.getInstance().reset();
         bornProcessOn = false;
     }
+
     public void pauseBorn() {
         //pastTime = bornProcess.getGameSec();
         timer.cancel();
         timer.purge();
     }
+
     public void resumeBorn() {
         timer = new Timer();
         bornProcess = new bornProcess(this, time);
         timer.schedule(bornProcess, 0, 100);
     }
-    public void setN1(int N1) {
-        this.N1 = N1;
+
+    public static void setN1(int N1) {
+        Habitat.N1 = N1;
     }
 
-    public void setN2(int N2) {
-        this.N2 = N2;
+    public static void setN2(int N2) {
+        Habitat.N2 = N2;
     }
 
-    public void setP1(int P1) {
-        this.P1 = P1;
+    public static void setP1(int P1) {
+        Habitat.P1 = P1;
     }
 
-    public void setK(int K) {
-        this.K = K;
+    public static void setK(int K) {
+        Habitat.K = K;
     }
 
-    public void setD1(int D1) {
-        this.D1 = D1;
+    public static void setD1(int D1) {
+        Habitat.D1 = D1;
     }
 
-    public void setD2(int D2) {
-        this.D2 = D2;
+    public static void setD2(int D2) {
+        Habitat.D2 = D2;
     }
 
-    public int getTime() {return time;}
+    public static int getTime() {
+        return time;
+    }
 
-    public int getD1() { return D1; }
+    public static int getD1() {
+        return D1;
+    }
 
-    public int getD2() { return D2; }
+    public static int getD2() {
+        return D2;
+    }
+
+    public static int getN1() {
+        return N1;
+    }
+
+    public static int getN2() {
+        return N2;
+    }
+
+    public static int getP1() {
+        return P1;
+    }
+
+    public static int getK(){
+        return K;
+    }
 
     public void confifureController(Controller controller) {
         this.controller = controller;

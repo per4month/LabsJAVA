@@ -30,7 +30,6 @@ public class Serialization {
     }
 
     public void deserialize() {
-        Habitat habitat = new Habitat();
         try (
                 FileInputStream fileInputStream = new FileInputStream(file);
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)
@@ -45,7 +44,7 @@ public class Serialization {
                 for (int i = 0; i < rabbitsList.size(); i++) {
                     Rabbit rabbit = rabbitsList.get(i);
                     int deathTime = rabbit.getDeathTime() - rabbit.getBirthTime();
-                    rabbit.setBirthTime(habitat.getTime());
+                    rabbit.setBirthTime(Habitat.getTime());
                     rabbit.setDeathTime(rabbit.getBirthTime() + deathTime);
                 }
             }
