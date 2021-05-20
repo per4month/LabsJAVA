@@ -32,7 +32,12 @@ public class ControlPanel extends JPanel {
     private JPanel lifeTimePanel;
     private JPanel currentInfoPanel;
     private JPanel panelAI;
-
+    private JButton reduceAlbinosRabbits = new JButton("Reduce albinos rabbits");
+    private JButton openNetwork = new JButton("Open network");
+    private JButton closeNetwork = new JButton("Close network");
+    private JButton sendSettings = new JButton ("Send settings");
+    private JButton showActiveClients = new JButton("Clients");
+    private JPanel serverClientPanel;
     private JButton startButton = new JButton("Start"); // button start
     private JButton stopButton = new JButton("Stop"); // button stop
     private JButton consoleButton = new JButton("Console"); // button console
@@ -74,7 +79,66 @@ public class ControlPanel extends JPanel {
         configureAlbinosPanel(N2, K);
         configureLifeTimePanel(D1, D2);
         configureInfoPanel();
-        configurePanelAI();
+        serverPanel();
+    }
+    public void serverPanel() {
+        serverClientPanel = new JPanel(new GridBagLayout());
+        setBorder(serverClientPanel, "Ordinary rabbits");
+        GridBagConstraints c = new GridBagConstraints();
+        serverClientPanel.setBackground(Color.decode("#E0FFFF"));
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.ipadx = 50;
+        serverClientPanel.add(openNetwork, c);
+
+        c.gridx = 1;
+        c.gridy = 0;
+        c.ipadx = 50;
+        serverClientPanel.add(closeNetwork, c);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        c.ipadx = 50;
+        serverClientPanel.add(sendSettings, c);
+
+        c.gridx = 1;
+        c.gridy = 1;
+        c.ipadx = 50;
+        serverClientPanel.add(showActiveClients, c);
+
+        setBorder(serverClientPanel, "Server");
+
+        serverClientPanel.setVisible(true);
+        add(serverClientPanel);
+
+        openNetwork.setEnabled(true);
+        closeNetwork.setEnabled(false);
+
+        closeNetwork.addActionListener(listener -> {
+            openNetwork.setEnabled(true);
+            closeNetwork.setEnabled(false);
+        });
+
+        openNetwork.addActionListener(action -> {
+            controller.work();
+            openNetwork.setEnabled(false);
+            closeNetwork.setEnabled(true);
+        });
+
+        showActiveClients.addActionListener(action -> {
+            controller.showClientsDialog();
+        });
+
+        closeNetwork.addActionListener(action -> {
+            controller.stopWork();
+            openNetwork.setEnabled(true);
+            closeNetwork.setEnabled(false);
+        });
+
+        sendSettings.addActionListener(action -> {
+            controller.sendFile();
+        });
     }
     private void configureButtonsPanel() {
         buttonsPanel = new JPanel(new GridBagLayout());

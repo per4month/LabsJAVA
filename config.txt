@@ -1,0 +1,6 @@
+1 // Generation time (sec) of ordinary rabbit
+30 // Probability (%) to born ordinary rabbit
+2 // Generation time (sec) of albinos rabbit
+30 // Probability (%) to born albinos rabbit
+5 // Lifetime of ordinary rabbit
+5 // Lifetime period of albinos rabbit

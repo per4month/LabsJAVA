@@ -6,15 +6,28 @@ import Rabbit.AlbinosAI;
 import Rabbit.OrdinaryAI;
 import Habitat.Habitat;
 import View.*;
-import java.util.Vector;
 
-public class Controller {
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Vector;
+import Server.TCPConnection;
+import Server.TCPConnectionListener;
+import utils.Configuration;
+
+import javax.swing.*;
+
+public class Controller implements TCPConnectionListener {
     private MyPanel m;
     private Habitat habitat;
     private MyFrame frame;
     private ControlPanel controlPanel;
     private AlbinosAI albinosAI;
     private OrdinaryAI ordinaryAI;
+    private TCPConnection connection;
+    private ArrayList<String> clients;
 
     public Controller(MyPanel myField, Habitat habitat, MyFrame frame, ControlPanel controlPanel) {
         this.m = myField;
@@ -25,6 +38,81 @@ public class Controller {
         albinosAI.start();
         this.ordinaryAI = new OrdinaryAI();
         ordinaryAI.start();
+    }
+    public void work() {
+        try {
+            connection = new TCPConnection(this, TCPConnection.IP_ADDRESS, TCPConnection.PORT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void sendFile() {
+        Configuration.saveConfig();
+        connection.sendObject(Configuration.getConfigFile());
+    }
+    @Override
+    public void onConnectionReady(TCPConnection tcpConnection) {
+
+    }
+
+    @Override
+    public void onReceiveObject(TCPConnection tcpConnection, Object object) {
+        if (object instanceof TCPConnection.BoxUsers) {
+            clients = ((TCPConnection.BoxUsers) object).users;
+        }
+        if (object instanceof File) {
+            System.out.println("File");
+            System.out.println(((File) object).getName());
+            ArrayList<Integer> parameters = new ArrayList<>();
+
+            try(
+                    Scanner scanner = new Scanner((File)object)
+            ) {
+                while (scanner.hasNextLine()) {
+                    String string = scanner.nextLine();
+                    System.out.println(string);
+                    Scanner intScanner = new Scanner(string);
+                    parameters.add(intScanner.nextInt());
+                }
+            } catch (IOException eIO) {
+                System.err.println("Error: something went wrong while loading config");
+            }
+            for (int i : parameters)
+                System.out.println(i);
+            setN1(parameters.get(0));
+            setP1(parameters.get(1));
+            setN2(parameters.get(2));
+            setK(parameters.get(3));
+            setD1(parameters.get(4));
+            setD2(parameters.get(5));
+        }
+    }
+
+    @Override
+    public void onDisconnect(TCPConnection tcpConnection) {
+
+    }
+
+    @Override
+    public void onException(TCPConnection tcpConnection, Exception e) {
+
+    }
+    public void stopWork() {
+        connection.disconnect();
+        clients = null;
+    }
+    public void showClientsDialog() {
+        if (clients != null) {
+            JPanel panel = new JPanel(new GridLayout(1, 1));
+            JTextArea area = new JTextArea(6, 25);
+            area.setEditable(false);
+
+            for (String client : clients) {
+                area.append(client + "\n");
+            }
+            panel.add(area);
+            JOptionPane.showMessageDialog(null, new JScrollPane(panel), "Rabbits", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     public void toPaint(Vector<Rabbit> rabbits) {
