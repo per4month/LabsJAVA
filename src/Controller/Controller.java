@@ -97,11 +97,11 @@ public class Controller implements TCPConnectionListener {
     public void onException(TCPConnection tcpConnection, Exception e) {
 
     }
-    public void stopWork() {
+    public void stopWork() { //конец работы
         connection.disconnect();
         clients = null;
     }
-    public void showClientsDialog() {
+    public void showClientsDialog() { //показать клиентов
         if (clients != null) {
             JPanel panel = new JPanel(new GridLayout(1, 1));
             JTextArea area = new JTextArea(6, 25);
