@@ -32,6 +32,7 @@ public class ControlPanel extends JPanel {
     private JPanel lifeTimePanel;
     private JPanel currentInfoPanel;
     private JPanel panelAI;
+    private int a = 0;
     private JButton reduceAlbinosRabbits = new JButton("Reduce albinos rabbits");
     private JButton openNetwork = new JButton("Open network");
     private JButton closeNetwork = new JButton("Close network");
