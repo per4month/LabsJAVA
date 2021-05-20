@@ -28,7 +28,9 @@ public class Configuration {
             System.err.println("Error: something went wrong with IO while saving config");
         }
     }
-
+    public static File getConfigFile() {
+        return configFile;
+    }
     public static ArrayList<Integer> loadConfig() {
         ArrayList<Integer> parameters = new ArrayList<>();
 
