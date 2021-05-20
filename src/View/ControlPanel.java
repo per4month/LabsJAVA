@@ -5,7 +5,6 @@ import Habitat.Habitat;
 import Rabbit.Rabbit;
 import Rabbit.RabbitsStorage;
 import utils.Serialization;
-import utils.Configuration;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -15,20 +14,31 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class ControlPanel extends JPanel {
-    private JPanel buttonsPanel; // panel for buttons
+    private JPanel buttonsPanel; // panel for
     private JPanel timePanel; // panel for time
     private JPanel albinosPanel;
     private JPanel simplePanel;
     private JPanel lifeTimePanel;
     private JPanel currentInfoPanel;
     private JPanel panelAI;
-
+    private int a = 0;
+    private JButton reduceAlbinosRabbits = new JButton("Reduce albinos rabbits");
+    private JButton openNetwork = new JButton("Open network");
+    private JButton closeNetwork = new JButton("Close network");
+    private JButton sendSettings = new JButton ("Send settings");
+    private JButton showActiveClients = new JButton("Clients");
+    private JPanel serverClientPanel;
     private JButton startButton = new JButton("Start"); // button start
     private JButton stopButton = new JButton("Stop"); // button stop
     private JButton consoleButton = new JButton("Console"); // button console
@@ -70,7 +80,66 @@ public class ControlPanel extends JPanel {
         configureAlbinosPanel(N2, K);
         configureLifeTimePanel(D1, D2);
         configureInfoPanel();
-        configurePanelAI();
+        serverPanel();
+    }
+    public void serverPanel() {
+        serverClientPanel = new JPanel(new GridBagLayout());
+        setBorder(serverClientPanel, "Ordinary rabbits");
+        GridBagConstraints c = new GridBagConstraints();
+        serverClientPanel.setBackground(Color.decode("#E0FFFF"));
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.ipadx = 50;
+        serverClientPanel.add(openNetwork, c);
+
+        c.gridx = 1;
+        c.gridy = 0;
+        c.ipadx = 50;
+        serverClientPanel.add(closeNetwork, c);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        c.ipadx = 50;
+        serverClientPanel.add(sendSettings, c);
+
+        c.gridx = 1;
+        c.gridy = 1;
+        c.ipadx = 50;
+        serverClientPanel.add(showActiveClients, c);
+
+        setBorder(serverClientPanel, "Server");
+
+        serverClientPanel.setVisible(true);
+        add(serverClientPanel);
+
+        openNetwork.setEnabled(true);
+        closeNetwork.setEnabled(false);
+
+        closeNetwork.addActionListener(listener -> {
+            openNetwork.setEnabled(true);
+            closeNetwork.setEnabled(false);
+        });
+
+        openNetwork.addActionListener(action -> {
+            controller.work();
+            openNetwork.setEnabled(false);
+            closeNetwork.setEnabled(true);
+        });
+
+        showActiveClients.addActionListener(action -> {
+            controller.showClientsDialog();
+        });
+
+        closeNetwork.addActionListener(action -> {
+            controller.stopWork();
+            openNetwork.setEnabled(true);
+            closeNetwork.setEnabled(false);
+        });
+
+        sendSettings.addActionListener(action -> {
+            controller.sendFile();
+        });
     }
     private void configureButtonsPanel() {
         buttonsPanel = new JPanel(new GridBagLayout());
@@ -98,7 +167,7 @@ public class ControlPanel extends JPanel {
         c.ipadx = 50;
         buttonsPanel.add(stopButton, c);
 
-       c.gridx = 1;
+        c.gridx = 1;
         c.gridy = 0;
         c.ipadx = 50;
         buttonsPanel.add(saveButton, c);
@@ -121,16 +190,6 @@ public class ControlPanel extends JPanel {
             } catch (UnsupportedAudioFileException e) {
                 e.printStackTrace();
             }
-
-            ArrayList<Integer> parameters = Configuration.loadConfig();
-
-            controller.setN1(parameters.get(0));
-            controller.setP1(parameters.get(1));
-            controller.setN2(parameters.get(2));
-            controller.setK(parameters.get(3));
-            controller.setD1(parameters.get(4));
-            controller.setD2((parameters.get(5)));
-
             startButton.setEnabled(false);
             stopButton.setEnabled(true);
             currentObjectsButton.setEnabled(true);
@@ -141,8 +200,6 @@ public class ControlPanel extends JPanel {
             Music.stopSound();
             startButton.setEnabled(true);
             stopButton.setEnabled(false);
-
-            Configuration.saveConfig();
 
             if (isInfoDialogEnabled()) {
                 controller.pauseBornProcess();
@@ -346,102 +403,102 @@ public class ControlPanel extends JPanel {
         add(albinosPanel);
     }
 
-   private void configureLifeTimePanel(int D1, int D2){
+    private void configureLifeTimePanel(int D1, int D2){
         lifeTimePanel = new JPanel(new GridBagLayout());
         setBorder(lifeTimePanel, "Life time");
         GridBagConstraints с = new GridBagConstraints();
 
-       simpleLifeTime = new JTextField();
-       simpleLifeTime.setText(String.valueOf(D1));
-       с.gridx = 1;
-       с.gridy = 0;
-       с.ipadx = 75;
+        simpleLifeTime = new JTextField();
+        simpleLifeTime.setText(String.valueOf(D1));
+        с.gridx = 1;
+        с.gridy = 0;
+        с.ipadx = 75;
 
-       simpleLifeTime.addMouseListener(new MouseAdapter() {
-           @Override
-           public void mouseClicked(MouseEvent e) {
-               setFocusable(true);
-           }
+        simpleLifeTime.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                setFocusable(true);
+            }
 
-           @Override
-           public void mouseEntered(MouseEvent e) {
-               setFocusable(true);
-           }
-       });
-       simpleLifeTime.addActionListener(action -> {
-           if (!simpleLifeTime.getText().isEmpty()) {
-               try {
-                   controller.setD1(Integer.parseInt(simpleLifeTime.getText())); // как тут ошибка, если я прописала функцию эту???
-               } catch (NumberFormatException a) {
-                   simpleLifeTime.setText(String.valueOf(D1));
-                   JOptionPane.showMessageDialog(null,
-                           "You have set wrong parameters!",
-                           "Warning: wrong parameters",
-                           JOptionPane.WARNING_MESSAGE);
-               }
-           } else {
-               simpleLifeTime.setText(String.valueOf(D1));
-               JOptionPane.showMessageDialog(null,
-                       "You have set wrong parameters!",
-                       "Warning: wrong parameters",
-                       JOptionPane.WARNING_MESSAGE);
-           }
-       });
-       lifeTimePanel.add(simpleLifeTime, с);
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setFocusable(true);
+            }
+        });
+        simpleLifeTime.addActionListener(action -> {
+            if (!simpleLifeTime.getText().isEmpty()) {
+                try {
+                    controller.setD1(Integer.parseInt(simpleLifeTime.getText())); // как тут ошибка, если я прописала функцию эту???
+                } catch (NumberFormatException a) {
+                    simpleLifeTime.setText(String.valueOf(D1));
+                    JOptionPane.showMessageDialog(null,
+                            "You have set wrong parameters!",
+                            "Warning: wrong parameters",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                simpleLifeTime.setText(String.valueOf(D1));
+                JOptionPane.showMessageDialog(null,
+                        "You have set wrong parameters!",
+                        "Warning: wrong parameters",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        });
+        lifeTimePanel.add(simpleLifeTime, с);
 
-       albinosLifeTime = new JTextField();
-       albinosLifeTime.setText(String.valueOf(D1));
-       с.gridx = 1;
-       с.gridy = 1;
-       с.ipadx = 75;
+        albinosLifeTime = new JTextField();
+        albinosLifeTime.setText(String.valueOf(D1));
+        с.gridx = 1;
+        с.gridy = 1;
+        с.ipadx = 75;
 
-       albinosLifeTime.addMouseListener(new MouseAdapter() {
-           @Override
-           public void mouseClicked(MouseEvent e) {
-               setFocusable(true);
-           }
+        albinosLifeTime.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                setFocusable(true);
+            }
 
-           @Override
-           public void mouseEntered(MouseEvent e) {
-               setFocusable(true);
-           }
-       });
-       albinosLifeTime.addActionListener(action -> {
-           if (!albinosLifeTime.getText().isEmpty()) {
-               try {
-                   controller.setD2(Integer.parseInt(albinosLifeTime.getText()));
-               } catch (NumberFormatException a) {
-                   albinosLifeTime.setText(String.valueOf(D2));
-                   JOptionPane.showMessageDialog(null,
-                           "You have set wrong parameters!",
-                           "Warning: wrong parameters",
-                           JOptionPane.WARNING_MESSAGE);
-               }
-           } else {
-               albinosLifeTime.setText(String.valueOf(D2));
-               JOptionPane.showMessageDialog(null,
-                       "You have set wrong parameters!",
-                       "Warning: wrong parameters",
-                       JOptionPane.WARNING_MESSAGE);
-           }
-       });
-       lifeTimePanel.add(albinosLifeTime, с);
-
-
-       JLabel ordinaryLifeTimeLabel = new JLabel("Ordinary life time:");
-       с.gridx = 0;
-       с.gridy = 0;
-       lifeTimePanel.add(ordinaryLifeTimeLabel, с);
-       JLabel albinosLifeTimeLabel = new JLabel("Albinos life time:");
-       с.gridx = 0;
-       с.gridy = 1;
-       lifeTimePanel.add(albinosLifeTimeLabel, с);
-
-       lifeTimePanel.setVisible(true);
-       lifeTimePanel.setFocusable(false);
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setFocusable(true);
+            }
+        });
+        albinosLifeTime.addActionListener(action -> {
+            if (!albinosLifeTime.getText().isEmpty()) {
+                try {
+                    controller.setD2(Integer.parseInt(albinosLifeTime.getText()));
+                } catch (NumberFormatException a) {
+                    albinosLifeTime.setText(String.valueOf(D2));
+                    JOptionPane.showMessageDialog(null,
+                            "You have set wrong parameters!",
+                            "Warning: wrong parameters",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                albinosLifeTime.setText(String.valueOf(D2));
+                JOptionPane.showMessageDialog(null,
+                        "You have set wrong parameters!",
+                        "Warning: wrong parameters",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        });
+        lifeTimePanel.add(albinosLifeTime, с);
 
 
-       add(lifeTimePanel);
+        JLabel ordinaryLifeTimeLabel = new JLabel("Ordinary life time:");
+        с.gridx = 0;
+        с.gridy = 0;
+        lifeTimePanel.add(ordinaryLifeTimeLabel, с);
+        JLabel albinosLifeTimeLabel = new JLabel("Albinos life time:");
+        с.gridx = 0;
+        с.gridy = 1;
+        lifeTimePanel.add(albinosLifeTimeLabel, с);
+
+        lifeTimePanel.setVisible(true);
+        lifeTimePanel.setFocusable(false);
+
+
+        add(lifeTimePanel);
     }
 
     private void configurePanelAI(){
@@ -549,6 +606,14 @@ public class ControlPanel extends JPanel {
 
         consoleButton.setEnabled(false);
         consoleButton.setFocusable(false);
+        JPanel consolePanel = new JPanel(new GridLayout(1, 1));
+        JTextArea areaConsole = new JTextArea();
+        areaConsole.setEditable(true);
+        areaConsole.setLineWrap(true);
+        areaConsole.setText("Available command: delete Albinos K. Changes probability to K" + '\n');
+        consolePanel.setAutoscrolls(true);
+        consolePanel.setPreferredSize(new Dimension(700,400));
+        consolePanel.add(areaConsole);
         c.gridx = 0;
         c.gridy = 1;
         c.ipadx = 50;
@@ -577,6 +642,67 @@ public class ControlPanel extends JPanel {
 
         consoleButton.addActionListener(listener -> {
 
+
+            if (JOptionPane.showConfirmDialog(null, consolePanel, "Console",
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                Component pan = consolePanel.getComponent(0);
+                if (pan.getClass().equals(JTextArea.class)) {
+                    PipedInputStream input = new PipedInputStream();
+                    PipedOutputStream output = new PipedOutputStream();
+                    try {
+                        output.connect(input);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Scanner fieldInput = new Scanner(input);
+                    PrintStream fieldOutput = new PrintStream(output);
+                    String txt = ((JTextArea) pan).getText();
+                    String last = "";
+                    for(String temp : txt.split("\n")) {
+                        last = temp;
+                    }
+                    //System.out.println(last);
+                    // System.out.println(txt);
+                    fieldOutput.println(last);
+                    //System.out.println(fieldInput);
+                    ((JTextArea) pan).setText("");
+                    String line = fieldInput.nextLine();
+                    ((JTextArea) pan).setText(txt + '\n');
+                    try {
+                        if(line.contains("delete Albinos") && line.matches(".*\\d+.*")) {
+                            Pattern pattern = Pattern.compile("\\d+");
+                            Matcher matcher = pattern.matcher(line);
+                            int start = 0;
+                            int result = 0;
+                            while (matcher.find(start)) {
+                                String value = line.substring(matcher.start(), matcher.end());
+                                result = Integer.parseInt(value);
+
+                                start = matcher.end();
+                            }
+                            if(result % 10 == 0) {
+                                try {
+                                    this.setK(result);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                ((JTextArea) pan).setText(txt + '\n' + "Successfully changed K to " + result + '\n');
+                                //System.out.println(result);
+                            }
+                            else ((JTextArea) pan).setText(txt + '\n' + "Failed. K must be % 10 " + '\n');
+                        }
+                        else {
+                            ((JTextArea) pan).setText(txt + '\n' + "Failed" + '\n');
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            } else {
+                // no option
+            }
 
         });
 
@@ -643,7 +769,7 @@ public class ControlPanel extends JPanel {
     public void setD2(int D2){ albinosLifeTime.setText(String.valueOf(D2)); }
 
     public void setP1(int P1) {
-       simpleProbability.setSelectedIndex(Arrays.asList(probabilitiesArray).indexOf(P1));
+        simpleProbability.setSelectedIndex(Arrays.asList(probabilitiesArray).indexOf(P1));
     }
 
     public void setK(int K) {
