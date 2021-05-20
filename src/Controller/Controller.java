@@ -265,7 +265,7 @@ public class Controller implements TCPConnectionListener {
     public void turnAlbinosAIOn() {
         if (!albinosAI.isAIActive()) {
             try {
-                albinosAI.startAI();
+                albinosAI.startAI(); //старт
                 albinosAI.wait();
             } catch (Exception eInterrupted) {}
         }
