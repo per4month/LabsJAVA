@@ -47,6 +47,11 @@ public class MyFrame extends JFrame implements KeyListener {
     private JMenuItem stopItem;
     private JMenuItem quitItem;
 
+    private JMenuItem saveConfig;
+    private JMenuItem loadConfig;
+    private JMenuItem saveRancho;
+    private JMenuItem loadRancho;
+
     private ButtonGroup albinosButtonGroup;
     private ButtonGroup simpleButtonGroup;
 
@@ -249,6 +254,28 @@ public class MyFrame extends JFrame implements KeyListener {
             System.exit(0);
         });
         menuBar.add(simControlMenu);
+
+        JMenu dataBaseMenu = new JMenu("DataBase");
+        saveConfig = new JMenuItem("Save Config");
+        loadConfig = new JMenuItem("Load Config");
+        saveRancho = new JMenuItem("Save Rancho");
+        loadRancho = new JMenuItem("Load Rancho");
+        dataBaseMenu.add(saveConfig);
+        dataBaseMenu.add(loadConfig);
+        dataBaseMenu.add(saveRancho);
+        dataBaseMenu.add(loadRancho);
+        saveConfig.addActionListener(actionEvent -> {
+            controller.saveConfigDataBase();
+        });
+        loadConfig.addActionListener(actionEvent -> {
+            controller.loadConfigDataBase();
+        });
+        saveRancho.addActionListener(actionEvent -> {
+            controller.saveRanchoDataBase();
+        });
+        loadRancho.addActionListener(actionEvent -> {
+            controller.loadRanchoDataBase();
+        });
 
         JMenu infoMenu = new JMenu("Simulation info");
         timeOnRadioButton = new JRadioButtonMenuItem("Time label on", true);
@@ -499,6 +526,7 @@ public class MyFrame extends JFrame implements KeyListener {
         rabbitsMenu.add(ordinaryMenu);
         rabbitsMenu.add(albinosMenu);
         menuBar.add(rabbitsMenu);
+        menuBar.add(dataBaseMenu);
 
         setJMenuBar(menuBar);
     }

@@ -27,6 +27,18 @@ public abstract class Rabbit implements IBehaviour, Serializable {
         //countOfRabbits++;
     }
 
+    Rabbit(int x, int y, String pathToImg, int birthTime, int deathTime, String _uuid, int _routeX, int _routeY) {
+        this.x = x;
+        this.y = y;
+        this.pathToImg = pathToImg;
+        this.birthTime = birthTime;
+        this.deathTime = deathTime;
+        this.uuid = _uuid;
+        this.routeX = _routeX;
+        this.routeY = _routeY;
+        //countOfRabbits++;
+    }
+
     public String getPathToImg() {
         return pathToImg;
     }

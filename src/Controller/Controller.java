@@ -10,12 +10,14 @@ import View.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Vector;
 import Server.TCPConnection;
 import Server.TCPConnectionListener;
 import utils.Configuration;
+import utils.DataBaseController;
 
 import javax.swing.*;
 
@@ -279,5 +281,39 @@ public class Controller implements TCPConnectionListener {
         albinosAI.setAIPriority(priority);
     }
 
+    public void saveConfigDataBase(){
+        try {
+            DataBaseController.saveConfigToDataBase();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    public void loadConfigDataBase(){
+        try {
+            ArrayList <Integer> params = DataBaseController.loadConfigFromDataBase();
+            setN1(params.get(0));
+            setP1(params.get(1));
+            setN2(params.get(2));
+            setK(params.get(3));
+            setD1(params.get(4));
+            setD2(params.get(5));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    public void saveRanchoDataBase(){
+        try {
+            DataBaseController.saveRabbitsToRancho();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    public void loadRanchoDataBase(){
+        try {
+            DataBaseController.loadRabbitsFromRancho();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 }
 

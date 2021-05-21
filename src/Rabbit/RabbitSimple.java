@@ -24,4 +24,9 @@ public class RabbitSimple extends Rabbit {
         countOfRabbits++;
 
     }
+    public RabbitSimple(int x, int y, String pathToImg, int birthTime, int deathTime, String _uuid, int _routeX, int _routeY) {
+        super(x, y, pathToImg, birthTime, deathTime,_uuid, _routeX, _routeY);
+        countOfSimple++;
+        countOfRabbits++;
+    }
 }
