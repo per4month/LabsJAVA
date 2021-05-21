@@ -53,7 +53,7 @@ public class DataBaseController {
         String sql;
         for (int i =0; i < rabbitsVector.size(); i++) {
             sql = "insert into Rancho (name, birthTime, deathTime, uuid, x, y, routeX, " +
-                    "routeY, pathToImage) values (?,?,?,?,?,?,?,?,?);";
+                    "routeY, pathToImage) values (?,?,?,?,?,?,?,?,?);"; //запрос
             preparedStatement = connection.prepareStatement(sql);
             if (rabbitsVector.get(i) instanceof RabbitAlbinos ) {
                 preparedStatement.setString(1, "Albinos");
